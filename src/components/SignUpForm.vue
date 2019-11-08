@@ -1,12 +1,12 @@
 <template>
   <b-form @submit.prevent="onSubmit">
     <b-form-group
-      id="input-group-email"
+      id="input-group-email-signup"
       label="Email"
-      label-for="input-email"
+      label-for="input-email-signup"
     >
       <b-form-input
-        id="input-email"
+        id="input-email-signup"
         v-model="form.email"
         type="email"
         required
@@ -15,12 +15,12 @@
       ></b-form-input>
     </b-form-group>
     <b-form-group
-      id="input-group-pass"
+      id="input-group-pass-signup"
       label="Password"
-      label-for="input-pass"
+      label-for="input-pass-signup"
     >
       <b-form-input
-        id="input-pass"
+        id="input-pass-signup"
         v-model="form.password"
         type="password"
         required
@@ -29,17 +29,16 @@
       ></b-form-input>
     </b-form-group>
     <b-form-group
-      id="input-group-masterp-login"
-      label="Master Password"
-      label-for="input-masterp-login"
-      v-if="!this.masterp"
+      id="input-group-confirm-pass"
+      label="Confirm Password"
+      label-for="input-confirm-pass"
     >
       <b-form-input
-        id="input-masterp-login"
-        v-model="form.masterp"
+        id="input-confirm-pass"
+        v-model="form.confirmPassword"
         type="password"
-        :required="!this.masterp"
-        placeholder="Enter your Master Password"
+        required
+        placeholder="Confirm your password"
         :readonly="readonly"
       ></b-form-input>
     </b-form-group>
@@ -48,19 +47,15 @@
     </b-alert>
     <b-button block type="submit" variant="primary" :disabled="loading">
       <i class="fas fa-spinner fa-spin" v-if="loading"></i>
-      <span v-else>Log In</span>
+      <span v-else>Sign Up</span>
     </b-button>
     <b-button block type="reset" variant="default" size="sm">Reset</b-button>
   </b-form>
 </template>
 
 <script>
-import store2 from 'store2'
 import { BButton, BForm, BFormInput, BFormGroup, BAlert } from 'bootstrap-vue'
 export default {
-  created(){
-    this.masterp = store2('masterp')
-  },
   mounted(){
     setTimeout(() => {
       this.readonly = false
@@ -70,12 +65,10 @@ export default {
     return {
       form:{
         email: '',
-        password: '',
-        masterp: ''
+        password: ''
       },
       showAlert: !!this.error,
-      readonly: true,
-      masterp: null
+      readonly: true
     }
   },
   props: {
@@ -95,8 +88,7 @@ export default {
   },
   methods:{
     onSubmit(){
-      this.form.masterp = this.masterp ? this.masterp : this.form.masterp
-      this.$emit('onSubmitLogin', this.form)
+      this.$emit('onSubmitSignUp', this.form)
     }
   },
   components: {

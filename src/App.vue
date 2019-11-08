@@ -1,5 +1,5 @@
 <template>
-  <b-container id="app" fluid>
+  <b-container id="app" fluid @mousemove="onUserInteraction">
     <router-view/>
   </b-container>
 </template>
@@ -11,6 +11,44 @@ import { BContainer } from 'bootstrap-vue'
 
 export default {
   name: 'app',
+  created(){
+    this.autoLogoutCounter()
+  },
+  updated(){
+    this.autoLogoutCounter()
+  },
+  data(){
+    return {
+      currentRoute: '',
+      interval: null,
+      seconds: 0
+    }
+  },
+  methods: {
+    autoLogoutCounter() {
+      this.currentRoute = this.$router.history.current.path
+      if (!this.interval && this.currentRoute !== '/login') {
+        this.interval = setInterval(() => {
+          this.seconds += 1
+        }, 1000)
+      }
+    },
+    onUserInteraction() {
+      this.seconds = 0
+    }
+  },
+  watch: {
+    seconds(newSeconds) {
+      // 120 === 2 minutes
+      if (newSeconds === 120 && this.currentRoute !== '/') {
+        window.clearInterval(this.interval)
+        this.interval = null
+        this.seconds = 0
+        sessionStorage.removeItem('vault')
+        this.$router.push('/login')
+      }
+    }
+  },
   components: {
     BContainer
   }

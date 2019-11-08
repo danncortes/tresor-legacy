@@ -2,11 +2,22 @@ import axios from 'axios'
 
 const { VUE_APP_API_URL } = process.env
 
-const loginUser = ({ email, password }) => {
+const loginUser = ({ email, password, masterp }) => {
   return axios.post(`${VUE_APP_API_URL}/users/login`,
     {
       email,
-      password
+      password,
+      masterp
+    }
+  )
+}
+
+const signupUser = ({ email, password, masterp }) => {
+  return axios.post(`${VUE_APP_API_URL}/users`,
+    {
+      email,
+      password,
+      masterp
     }
   )
 }
@@ -21,5 +32,6 @@ const fetchUser = (token) => {
 
 export {
   loginUser,
-  fetchUser
+  fetchUser,
+  signupUser
 }

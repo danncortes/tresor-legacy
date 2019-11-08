@@ -1,6 +1,5 @@
 import Router from 'vue-router';
 import Vue from 'vue'
-import ls from 'store2'
 
 import Layout from '@/components/Layout.vue';
 import Login from '@/views/Login.vue';
@@ -14,14 +13,14 @@ const checkAuthentication = async (to, from, next) => {
   if (isTokenInStore) {
     next()
   } else {
-    const vault = ls('vault');
-    const tokeFromLs = vault && vault.token
-    if (tokeFromLs) {
+    const vault = sessionStorage.getItem('vault')
+    const tokeFromSs = vault && JSON.parse(vault).token
+    if (tokeFromSs) {
       try {
-        await userStore.fetchUser(tokeFromLs)
+        await userStore.fetchUser(tokeFromSs)
         next()
       } catch (err) {
-        ls('vault', {})
+        sessionStorage.removeItem('vault')
         next('/login')
       }
     } else {
@@ -31,9 +30,9 @@ const checkAuthentication = async (to, from, next) => {
 }
 
 const isAuth = (to, from, next) => {
-  const vault = ls('vault');
-  const tokeFromLs = vault && vault.token
-  if (tokeFromLs) {
+  const vault = sessionStorage.getItem('vault')
+  const tokeFromSs = vault && JSON.parse(vault).token
+  if (tokeFromSs) {
     next(from.path)
   } else {
     next()
