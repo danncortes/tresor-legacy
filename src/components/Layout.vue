@@ -1,21 +1,18 @@
 <template>
   <b-row class="layout-container" align-v="center" align-h="center">
-    <b-col cols="4">
-      <b-card no-body>
-        <!-- Header -->
-        <router-view/>
-      </b-card>
-    </b-col>
+    <CoreLayout>
+      <router-view/>
+    </CoreLayout>
   </b-row>
 </template>
 
 <script>
-import { BRow, BCol, BCard } from 'bootstrap-vue'
+import { BRow } from 'bootstrap-vue'
+import CoreLayout from '@/components/CoreLayout.vue'
   export default {
     components: {
       BRow,
-      BCol,
-      BCard
+      CoreLayout
     }
   }
 </script>

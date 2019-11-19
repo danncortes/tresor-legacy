@@ -14,10 +14,10 @@ const checkAuthentication = async (to, from, next) => {
     next()
   } else {
     const vault = sessionStorage.getItem('vault')
-    const tokeFromSs = vault && JSON.parse(vault).token
-    if (tokeFromSs) {
+    const tokenFromSs = vault && JSON.parse(vault).token
+    if (tokenFromSs) {
       try {
-        await userStore.fetchUser(tokeFromSs)
+        await userStore.fetchUser(tokenFromSs)
         next()
       } catch (err) {
         sessionStorage.removeItem('vault')
@@ -31,8 +31,8 @@ const checkAuthentication = async (to, from, next) => {
 
 const isAuth = (to, from, next) => {
   const vault = sessionStorage.getItem('vault')
-  const tokeFromSs = vault && JSON.parse(vault).token
-  if (tokeFromSs) {
+  const tokenFromSs = vault && JSON.parse(vault).token
+  if (tokenFromSs) {
     next(from.path)
   } else {
     next()
@@ -52,11 +52,13 @@ const routes = [
     },
     children: [
       {
+        name: "login",
         path: '/login',
         component: Login,
         beforeEnter: isAuth
       },
       {
+        name: "dashboard",
         path: '/dashboard',
         component: Dashboard,
         beforeEnter: checkAuthentication

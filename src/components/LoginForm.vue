@@ -80,7 +80,7 @@ export default {
   },
   props: {
     error: {
-      type: String
+      type: [String, Boolean]
     },
     loading: {
       type: Boolean

@@ -60,15 +60,15 @@ export default {
     sessionStorage.setItem('vault', JSON.stringify(payload))
   },
   setLoadingLogin(payload) {
-    this.state.loadingLoging = payload
+    this.state.loadingLogin = payload
   },
   setErrorLogin(payload) {
     this.state.errorLogin = payload
   },
   setLoadingSignup(payload) {
-    this.state.loadingLoging = payload
+    this.state.loadingSignup = payload
   },
   setErrorSignup(payload) {
-    this.state.errorLogin = payload
+    this.state.errorSignup = payload
   }
 }

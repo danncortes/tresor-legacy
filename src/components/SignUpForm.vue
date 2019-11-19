@@ -26,6 +26,7 @@
         required
         placeholder="Enter your password"
         :readonly="readonly"
+        :state="validPass"
       ></b-form-input>
     </b-form-group>
     <b-form-group
@@ -40,12 +41,13 @@
         required
         placeholder="Confirm your password"
         :readonly="readonly"
+        :state="validPass"
       ></b-form-input>
     </b-form-group>
     <b-alert v-model="showAlert" variant="danger" dismissible>
       {{error}}
     </b-alert>
-    <b-button block type="submit" variant="primary" :disabled="loading">
+    <b-button block type="submit" variant="primary" :disabled="loading || !passMatch">
       <i class="fas fa-spinner fa-spin" v-if="loading"></i>
       <span v-else>Sign Up</span>
     </b-button>
@@ -68,7 +70,8 @@ export default {
         password: ''
       },
       showAlert: !!this.error,
-      readonly: true
+      readonly: true,
+      validPass: null
     }
   },
   props: {
@@ -77,6 +80,11 @@ export default {
     },
     loading: {
       type: Boolean
+    }
+  },
+  computed: {
+    passMatch(){
+      return this.form.password === this.form.confirmPassword
     }
   },
   watch:{
