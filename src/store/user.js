@@ -2,6 +2,7 @@ import uuid from 'uuid'
 import store2 from 'store2'
 import { loginUser, fetchUser, signupUser } from '@/services/user-service'
 import router from '@/router'
+import { cryptData } from '@/utils/cryptDecrypt'
 
 export default {
   state: {
@@ -19,11 +20,12 @@ export default {
     })
   },
   loginUser: async function (form) {
+    this.setErrorLogin(false)
     this.setLoadingLogin(true)
     try {
       const user = await loginUser(form)
       this.setUser(user.data)
-      store2('masterp', form.masterp)
+      store2('masterp', cryptData(form.masterp))
       router.push('/dashboard')
       this.setErrorLogin(false)
     } catch (err) {
@@ -34,6 +36,7 @@ export default {
     }
   },
   signupUser: async function (email, password) {
+    this.setErrorSignup(false)
     this.setLoadingSignup(true)
     const masterp = uuid()
     const form = {

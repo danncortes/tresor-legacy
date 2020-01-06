@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { BRow, BCol, BCard } from 'bootstrap-vue'
+import { BCol, BCard } from 'bootstrap-vue'
 export default {
   created(){
     this.setCurrentRoute(this.$route)
