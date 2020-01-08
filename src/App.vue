@@ -56,6 +56,10 @@ export default {
 </script>
 
 <style lang="scss">
+  html {
+    font-size: 16px;
+  }
+  
   body {
     background-color: #333333;
     height: 100vh;
@@ -63,5 +67,9 @@ export default {
 
   #app {
     height: 100vh;
+  }
+
+  .layout-in {
+    padding: 10px 14px
   }
 </style>

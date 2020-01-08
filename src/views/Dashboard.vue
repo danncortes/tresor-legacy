@@ -1,20 +1,44 @@
 <template>
-<div>
-  <h3>Dashboard</h3>
-</div>
+  <div class="layout-in">
+    <h4>Credentials</h4>
+    <div v-if="loadingCredentials">
+      Loading...
+    </div>
+    <div v-else-if="errorCredentials">
+      {{errorCredentials}}
+    </div>
+    <div v-else>
+      <CredentialsList :credentials="credentials"/>
+    </div>
+  </div>
 </template>
 
 <script>
-import userStore from '@/store/user'
+import credentialStore from '@/store/credentials'
+import CredentialsList from '@/components/CredentialsList'
 
 export default {
   created(){
-    console.log('this.storeState.user -->', this.storeState.user)
+    credentialStore.getCredentials()
   },
   data(){
     return {
-      storeState: userStore.state
+      credentialState: credentialStore.state,
     }
-  }  
+  },
+  computed: {
+    credentials() {
+      return this.credentialState.credentials
+    },
+    errorCredentials() {
+      return this.credentialState.errorCredentials
+    },
+    loadingCredentials() {
+      return this.credentialState.loadingCredentials
+    }
+  },
+  components: {
+    CredentialsList
+  }
 }
 </script>
