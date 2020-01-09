@@ -1,5 +1,15 @@
 <template>
-  <div>
+  <div class="credential-list">
+    <b-container class="credential-list__header">
+      <b-row>
+        <b-col cols="5">Name</b-col>
+        <b-col cols="3">Updated At</b-col>
+        <b-col cols="3">Created At</b-col>
+        <b-col cols="1">
+          <i class="fas fa-angle-left"></i>
+        </b-col>
+      </b-row>
+    </b-container>
     <CredentialListItem
       v-for="(credential, index) in localCredentials"
       v-bind:key="index"
@@ -11,6 +21,7 @@
 
 <script>
 import CredentialListItem from '@/components/CredentialListItem'
+import { BContainer, BRow, BCol } from 'bootstrap-vue'
 
 export default {
   data() {
@@ -33,19 +44,27 @@ export default {
   methods:{
     toggleCred (index) {
       this.localCredentials = this.localCredentials.map((cred, indx) => {
-      if(index === indx) {
-        cred.open = !cred.open
-      }
-      return cred
-    })
+        if(index === indx) {
+          cred.open = !cred.open
+        }
+        return cred
+      })
     }
   },
   components: {
-    CredentialListItem
+    CredentialListItem,
+    BContainer,
+    BRow,
+    BCol
   }
 }
 </script>
 
 <style lang="scss">
-
+  .credential-list {
+    &__header {
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+  }
 </style>

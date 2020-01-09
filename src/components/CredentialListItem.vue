@@ -10,19 +10,30 @@
           <b-col cols="5">{{credential.name}}</b-col>
           <b-col cols="3">{{credential.updatedAt | format('DD-MM-YYYY HH:mm')}}</b-col>
           <b-col cols="3">{{credential.createdAt | format('DD-MM-YYYY HH:mm')}}</b-col>
-          <b-col cols="1">eye</b-col>
+          <b-col cols="1">
+            <i class="fas fa-angle-down" v-if="credential.open"></i>
+            <i class="fas fa-angle-left" v-else></i>
+          </b-col>
         </b-row>
       </b-container>
     </div>
     
     <b-collapse :id="credential._id">
-      Hi
+      <transition name="fade">
+        <CredentialDetail
+          class="credential-list-item__collapsable-area"
+          v-if="credential.open"
+          :open="credential.open"
+          :data="credential.data"
+        />
+        </transition>
     </b-collapse>
   </div>
 </template>
 
 <script>
 import { BCollapse, VBToggle, BContainer, BRow, BCol } from 'bootstrap-vue'
+import CredentialDetail from '@/components/CredentialDetail'
 
 export default {
   props: {
@@ -43,7 +54,8 @@ export default {
     BCollapse,
     BContainer,
     BRow,
-    BCol
+    BCol,
+    CredentialDetail
   }
 }
 </script>
@@ -54,6 +66,17 @@ export default {
       border-top: 1px solid #e5e5e5;
       cursor: pointer;
       padding: 12px 2px;
+    }
+
+    &__collapsable-area {
+      padding: 17px;
+    }
+
+    .fade-enter-active, .fade-leave-active {
+      transition: opacity .5s;
+    }
+    .fade-enter, .fade-leave-to {
+      opacity: 0;
     }
   }
 </style>
