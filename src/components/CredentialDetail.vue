@@ -3,7 +3,9 @@
     <CredentialField
       v-for="(field, key) in credentialDetailArray"
       :field="field"
+      :index="key"
       v-bind:key="key"
+      @onToggleShowPass="onToggleShowPass"
     />
   </div>
 </template>
@@ -20,15 +22,23 @@ export default {
     for(let key in this.credentialDetail) {
       credArray.push({
         fieldName: key,
-        data: this.credentialDetail[key]
+        data: this.credentialDetail[key],
+        show: false
       })
-      this.credentialDetailArray = [...credArray]
     } 
+    this.credentialDetailArray = [...credArray]
   },
   data() {
     return {
       credentialDetail: {},
       credentialDetailArray: []
+    }
+  },
+  methods: {
+    onToggleShowPass(index){
+      const newCreds = [...this.credentialDetailArray]
+      newCreds[index].show = !newCreds[index].show
+      this.credentialDetailArray = [...newCreds]
     }
   },
   beforeDestroy(){
@@ -50,6 +60,10 @@ export default {
 }
 </script>
 
-<style style="scss">
-
+<style lang="scss">
+  .credential-detail {
+    .credential-field:not(:last-child) {
+      margin-bottom: 14px;
+    }
+  }
 </style>
