@@ -7,13 +7,15 @@
         size="sm"
         v-model="data"
         :type="typeField"
+        readonly
       ></b-input>
-      <span @click="() => { onClickEye(index) }">
+      <span v-if="showEye" @click="() => { onClickEye(index) }">
         <i class="fas fa-eye" v-if="!field.show"></i>
         <i class="fas fa-eye-slash" v-else></i>
       </span>
     </b-form>
   </div>
+  
 </template>
 
 <script>
@@ -21,10 +23,16 @@
   export default {
     computed: {
       typeField() {
-        return this.field.show ? 'text' : 'password'
+        if((typeof this.field.show) === 'boolean') {
+          return this.field.show ? 'text' : 'password'
+        }
+        return 'text'
       },
       data() {
         return this.field.data
+      },
+      showEye() {
+        return this.field.type === 'userName'  || this.field.type === 'password'
       }
     },
     methods: {

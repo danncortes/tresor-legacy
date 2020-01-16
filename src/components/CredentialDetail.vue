@@ -18,15 +18,17 @@ export default {
   created(){
     this.credentialDetail = decryptDataObj(this.data)
 
-    const credArray = []
-    for(let key in this.credentialDetail) {
-      credArray.push({
-        fieldName: key,
-        data: this.credentialDetail[key],
-        show: false
-      })
-    } 
-    this.credentialDetailArray = [...credArray]
+    const newCredentialDetail = this.credentialDetail.map(cred => {
+      if(cred.type === 'userName' || cred.type === 'password') {
+        return {
+          ...cred,
+          show: false
+        }
+      }
+      return cred
+    })
+
+    this.credentialDetailArray = [...newCredentialDetail]
   },
   data() {
     return {
