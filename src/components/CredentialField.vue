@@ -9,10 +9,22 @@
         :type="typeField"
         readonly
       ></b-input>
-      <span v-if="showEye" @click="() => { onClickEye(index) }">
+      <b-button variant="outline-secondary" size="sm" v-if="showEye" @click="() => { onClickEye(index) }">
         <i class="fas fa-eye" v-if="!field.show"></i>
         <i class="fas fa-eye-slash" v-else></i>
-      </span>
+      </b-button>
+      <b-button variant="outline-primary" size="sm">
+        <i class="far fa-copy"></i>
+      </b-button>
+      <b-button v-if="field.type === 'email'" variant="outline-primary" size="sm">
+        <i class="far fa-envelope"></i>
+      </b-button>
+      <b-button v-else-if="field.type === 'address'" variant="outline-primary" size="sm">
+        <i class="far fa-map"></i>
+      </b-button>
+      <b-button v-else-if="field.type === 'url'" variant="outline-primary" size="sm">
+        <i class="fas fa-external-link-alt"></i>
+      </b-button>
     </b-form>
   </div>
   
@@ -71,6 +83,10 @@
 
     input {
       margin-right: 10px
+    }
+
+    button {
+      margin-right: 6px;
     }
   }
 </style>

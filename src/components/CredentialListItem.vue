@@ -69,7 +69,7 @@ export default {
     }
 
     &__collapsable-area {
-      padding: 17px;
+      padding: 22px;
     }
 
     .fade-enter-active, .fade-leave-active {
