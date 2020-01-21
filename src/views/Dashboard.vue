@@ -1,6 +1,38 @@
 <template>
-  <div class="layout-in">
-    <h4>Credentials</h4>
+  <div class="layout-in dashboard">
+    <b-container class="title-area">
+      <b-row align-h="between" align-v="center" no-gutters>
+        <b-col cols="auto">
+          <h4 class="title" v-if="openNewCredential">New Credential</h4>
+          <h4 class="title" v-else>Credentials</h4>
+        </b-col>
+        <b-col cols="auto">
+          <b-button
+            size="sm"
+            v-b-toggle.new-credential
+            v-if="openNewCredential">
+              <i class="fas fa-times"></i> Cancel
+          </b-button>
+          <b-button
+            variant="primary"
+            size="sm"
+            v-b-toggle.new-credential
+            v-else>
+              <i class="fas fa-plus"></i> New
+          </b-button>
+        </b-col>
+      </b-row>
+    </b-container>
+
+    <!-- New Credential -->
+    <b-collapse id="new-credential" v-model="openNewCredential">
+      <transition name="fadeCred">
+        <CreateCredential
+          v-if="openNewCredential"
+          @onCredCreated="toggleCreateCred"
+        />
+      </transition>
+    </b-collapse>
     <div v-if="loadingCredentials">
       Loading...
     </div>
@@ -16,6 +48,8 @@
 <script>
 import credentialStore from '@/store/credentials'
 import CredentialsList from '@/components/CredentialsList'
+import CreateCredential from '@/components/CreateCredential'
+import { BCollapse, VBToggle, BContainer, BRow, BCol, BButton } from 'bootstrap-vue'
 
 export default {
   created(){
@@ -24,6 +58,12 @@ export default {
   data(){
     return {
       credentialState: credentialStore.state,
+      openNewCredential: false
+    }
+  },
+  methods: {
+    toggleCreateCred() {
+      this.openNewCredential = !this.openNewCredential
     }
   },
   computed: {
@@ -37,8 +77,37 @@ export default {
       return this.credentialState.loadingCredentials
     }
   },
+  directives: {
+    'b-toggle': VBToggle
+  },
   components: {
-    CredentialsList
+    CredentialsList,
+    CreateCredential,
+    BContainer,
+    BRow,
+    BCol,
+    BButton,
+    BCollapse
   }
 }
 </script>
+
+<style lang="scss">
+  .dashboard {
+    .title-area {
+      margin-bottom: 24px; 
+
+      .title {
+        margin-bottom: 0;
+      }
+    }
+    .fadeCred-enter-active, .fadeCred-leave-active {
+      transition: opacity .5s;
+    }
+    .fadeCred-enter, .fadeCred-leave-to {
+      opacity: 0;
+    }
+  }
+
+
+</style>

@@ -65,7 +65,7 @@ export default {
     &__bar {
       border-top: 1px solid #e5e5e5;
       cursor: pointer;
-      padding: 12px 2px;
+      padding: 16px 2px;
     }
 
     &__collapsable-area {

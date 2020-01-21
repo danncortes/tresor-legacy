@@ -63,9 +63,5 @@ export default {
 </script>
 
 <style lang="scss">
-  .credential-detail {
-    .credential-field:not(:last-child) {
-      margin-bottom: 14px;
-    }
-  }
+
 </style>

@@ -10,6 +10,16 @@ const fetchCredentials = (token) => {
   )
 }
 
+const saveCredential = (token, data) => {
+  return axios.post(`${VUE_APP_API_URL}/cred`,
+    data,
+    {
+      headers: { 'Authorization': `Bearer ${token}` },
+    }
+  )
+}
+
 export {
-  fetchCredentials
+  fetchCredentials,
+  saveCredential
 }

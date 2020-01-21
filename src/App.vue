@@ -70,6 +70,6 @@ export default {
   }
 
   .layout-in {
-    padding: 10px 14px
+    padding: 16px 14px
   }
 </style>

@@ -36,12 +36,20 @@ export default {
     }
   },
   created(){
-    this.localCredentials = this.credentials.map(cred => ({
-      ...cred,
-      open: false
-    }))
+    this.buildLocalCredentials()
+  },
+  watch: {
+    credentials(newValue){
+      newValue && this.buildLocalCredentials()
+    }
   },
   methods:{
+    buildLocalCredentials(){
+      this.localCredentials = this.credentials.map(cred => ({
+        ...cred,
+        open: false
+      }))
+    },
     toggleCred (index) {
       this.localCredentials = this.localCredentials.map((cred, indx) => {
         if(index === indx) {
