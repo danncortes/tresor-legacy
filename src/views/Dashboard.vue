@@ -1,5 +1,5 @@
 <template>
-  <div class="layout-in dashboard">
+  <div class="layout-in dashboard px-3 py-3">
     <b-container class="title-area">
       <b-row align-h="between" align-v="center" no-gutters>
         <b-col cols="auto">
@@ -26,12 +26,14 @@
 
     <!-- New Credential -->
     <b-collapse id="new-credential" v-model="openNewCredential">
-      <transition name="fadeCred">
-        <CreateCredential
-          v-if="openNewCredential"
-          @onCredCreated="toggleCreateCred"
-        />
-      </transition>
+      <div class="dashboard__create-cred-container">
+        <transition name="fadeCred">
+          <CreateCredential
+            v-if="openNewCredential"
+            @onCredCreated="() => {this.openNewCredential = !this.openNewCredential}"
+          />
+        </transition>
+      </div>
     </b-collapse>
     <div v-if="loadingCredentials">
       Loading...
@@ -59,11 +61,6 @@ export default {
     return {
       credentialState: credentialStore.state,
       openNewCredential: false
-    }
-  },
-  methods: {
-    toggleCreateCred() {
-      this.openNewCredential = !this.openNewCredential
     }
   },
   computed: {
@@ -106,6 +103,10 @@ export default {
     }
     .fadeCred-enter, .fadeCred-leave-to {
       opacity: 0;
+    }
+
+    &__create-cred-container {
+      min-height: 325px
     }
   }
 

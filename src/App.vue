@@ -68,8 +68,4 @@ export default {
   #app {
     height: 100vh;
   }
-
-  .layout-in {
-    padding: 16px 14px
-  }
 </style>

@@ -1,10 +1,10 @@
 <template>
-  <div class="credential-field">
+  <div class="credential-field mb-3">
     <b-container class="bv-example-row">
       <b-row align-h="between" align-v="start" no-gutters>
         <b-col cols="auto">
-          <b-form class="credential-field__form" inline>
-            <div role="group" v-if="edit">
+          <div class="credential-field__inputs d-flex">
+            <div role="group" v-if="edit" class="mr-2">
               <!-- Field Name -->
               <b-input
                 size="sm"
@@ -14,6 +14,8 @@
                 placeholder="Field Name"
                 :state="fieldNameValid"
                 @keyup="(e) => { onChangeFieldName(e) }"
+                required
+                class="credential-field__input-field-name"
               ></b-input>
               <b-form-invalid-feedback id="input-live-feedback">
                 "{{fieldName}}" field should not be duplicated
@@ -22,10 +24,10 @@
 
             <!-- Label Read-->
             <label
-            v-else
-            class="mr-sm-2"
-            :for="`inline-form-input-${field.fieldName}`">
-              {{field.fieldName}}
+              v-else
+              class="mr-sm-2"
+              :for="`inline-form-input-${field.fieldName}`">
+                {{field.fieldName}}
             </label>
 
             <!-- Data -->
@@ -38,12 +40,14 @@
               :readonly="readonly"
               :placeholder="`Insert ${fieldName}`"
               @keyup="(e) => { onChangeData(e) }"
+              class="mr-2 credential-field__data-field"
             ></b-input>
 
             <TypesSelect
               :value="field.type"
               @onSelectTypeChange="onSelectTypeChange"
-              v-if="edit"/>
+              v-if="edit"
+              class="credential-field__type-select"/>
 
             <div class="credential-field__controls-read" v-if="!edit">
               <!-- Eye button Show/Hide-->
@@ -77,7 +81,7 @@
 
               <span v-if="copied">Copied!</span>
             </div>
-          </b-form>
+          </div>
         </b-col>
 
         <b-col cols="auto" v-if="edit">
@@ -96,7 +100,7 @@
 </template>
 
 <script>
-  import { BButton, BForm, BFormInput, BContainer, BRow, BCol, BFormInvalidFeedback } from 'bootstrap-vue'
+  import { BButton, BFormInput, BContainer, BRow, BCol, BFormInvalidFeedback } from 'bootstrap-vue'
   import TypesSelect from '@/components/TypesSelect'
   export default {
     data(){
@@ -192,7 +196,6 @@
     },
     components: {
       BButton,
-      BForm,
       'b-input': BFormInput,
       TypesSelect,
       BContainer,
@@ -205,7 +208,17 @@
 
 <style lang="scss">
   .credential-field {
-    margin-bottom: 14px;
+    &__input-field-name {
+      width: 120px;
+    }
+
+    &__data-field {
+      width: 210px
+    }
+
+    &__type-select {
+      width: 120px
+    }
 
     .fa-eye, .fa-eye-slash {
       cursor: pointer
@@ -214,10 +227,6 @@
     label {
       width: 130px;
       justify-content: initial
-    }
-
-    input {
-      margin-right: 10px
     }
 
     button {

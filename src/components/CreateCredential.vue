@@ -1,55 +1,62 @@
 <template>
   <div class="create-credential">
     <div class="create-credential__box">
-      <b-input
-        size="sm"
-        v-model="credentialName"
-        placeholder="Enter a name"
-        class="create-credential__credential-name ml-3 mb-3"
-      ></b-input>
-      <CredentialField
-        v-for="(field, key) in fields"
-        v-bind:key="key"
-        :field="field"
-        :index="key"
-        :edit="edit"
-        :fieldNameValid="field.valid"
-        :plusButton="plusButton(key)"
-        :minusButton="minusButton(key)"
-        @onChangeFieldName="(val) => { updateFieldName(val, key) }"
-        @onChangeData="(val) => { updateData(val, key) }"
-        @onSelectTypeChange="(type) => { updateType(type, key) }"
-        @onClickRemove="() => removeField(key)"
-        @onClickAdd="addField"
-      />
-      <b-container class="create-credential__controls">
-        <b-row align-h="end" align-v="start" no-gutters>
-          <b-col cols="auto">
-            <b-button class="create-credential__cancel-btn" variant="default" size="sm">
-              Cancel
-            </b-button>
-            <b-button
-              variant="primary"
-              size="sm"
-              @click.prevent="saveCredential"
-              :disabled="processing"
-            >
-              <span v-if="processing">
-                <b-spinner
-                  small
-                  label="Spinning"
-                ></b-spinner>
-                Saving...
-              </span>
-              <span v-else>
-                Save <i class="fas fa-save"></i>
-              </span>
-            </b-button>
-          </b-col>
-        </b-row>
-      </b-container>
+      <b-form @submit.prevent="saveCredential">
+        <b-input
+          size="sm"
+          v-model="credentialName"
+          placeholder="Enter a name"
+          class="create-credential__credential-name ml-3 mb-3"
+          required
+        ></b-input>
+        <CredentialField
+          v-for="(field, key) in fields"
+          v-bind:key="key"
+          :field="field"
+          :index="key"
+          :edit="edit"
+          :fieldNameValid="field.valid"
+          :plusButton="plusButton(key)"
+          :minusButton="minusButton(key)"
+          @onChangeFieldName="(val) => { updateFieldName(val, key) }"
+          @onChangeData="(val) => { updateData(val, key) }"
+          @onSelectTypeChange="(type) => { updateType(type, key) }"
+          @onClickRemove="() => removeField(key)"
+          @onClickAdd="addField"
+        />
+        <b-container class="create-credential__controls mt-4">
+          <b-row align-h="end" align-v="start" no-gutters>
+            <b-col cols="auto">
+              <b-button
+                class="create-credential__cancel-btn mr-2"
+                variant="default"
+                size="sm"
+                v-b-toggle.new-credential>
+                Cancel
+              </b-button>
+              <b-button
+                variant="primary"
+                size="sm"
+                :disabled="processing"
+                type="submit"
+              >
+                <span v-if="processing">
+                  <b-spinner
+                    small
+                    label="Spinning"
+                  ></b-spinner>
+                  Saving...
+                </span>
+                <span v-else>
+                  <i class="fas fa-save"></i> Save
+                </span>
+              </b-button>
+            </b-col>
+          </b-row>
+        </b-container>
+      </b-form>
     </div>
-    <h4 class="create-credential__title-backup">Credentials</h4>
+    <h4 class="create-credential__title-backup ml-3 mb-3">Credentials</h4>
   </div>
 </template>
 
@@ -57,7 +64,7 @@
 import { cloneDeep } from 'lodash';
 import CredentialField from '@/components/CredentialField'
 import { userName, password } from '@/constants/fieldsTemplate'
-import { BContainer, BRow, BCol, BButton, BFormInput, BSpinner } from 'bootstrap-vue'
+import { BContainer, BRow, BForm, BCol, BButton, BFormInput, BSpinner, VBToggle} from 'bootstrap-vue'
 import credentialStore from '@/store/credentials'
 import { cryptDataObj } from '@/utils/cryptDecrypt'
 
@@ -157,6 +164,9 @@ export default {
       return this.credentialState.credentialStatus.processing
     }
   },
+  directives: {
+    'b-toggle': VBToggle
+  },
   components: {
     CredentialField,
     BContainer,
@@ -164,13 +174,16 @@ export default {
     BCol,
     BButton,
     'b-input': BFormInput,
-    BSpinner
+    BSpinner,
+    BForm
+    
   }
 }
 </script>
 
 <style lang="scss" scoped>
   .create-credential {
+    
     &__box {
       padding: 24px 10px 20px;
       background-color: #f2f2f2;
@@ -181,18 +194,6 @@ export default {
 
     &__credential-name {
       width: 200px;
-    }
-
-    &__controls {
-      margin-top: 30px
-    }
-
-    &__cancel-btn {
-      margin-right: 10px;
-    }
-
-    &__title-backup {
-      margin: 0 0 30px 16px;
     }
   }
 </style>

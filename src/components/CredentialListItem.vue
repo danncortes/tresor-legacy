@@ -1,7 +1,7 @@
 <template>
   <div class="credential-list-item">
     <div
-      class="credential-list-item__bar"
+      class="credential-list-item__bar px-2 py-3"
       @click="onClickCredential"
       v-b-toggle="credential._id"
     >
@@ -21,7 +21,7 @@
     <b-collapse :id="credential._id">
       <transition name="fade">
         <CredentialDetail
-          class="credential-list-item__collapsable-area"
+          class="credential-list-item__collapsable-area p-4"
           v-if="credential.open"
           :open="credential.open"
           :data="credential.data"
@@ -65,11 +65,6 @@ export default {
     &__bar {
       border-top: 1px solid #e5e5e5;
       cursor: pointer;
-      padding: 16px 2px;
-    }
-
-    &__collapsable-area {
-      padding: 22px;
     }
 
     .fade-enter-active, .fade-leave-active {
