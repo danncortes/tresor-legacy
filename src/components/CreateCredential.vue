@@ -1,119 +1,72 @@
 <template>
   <div class="create-credential">
-    <div class="create-credential__box">
-      <b-form @submit.prevent="saveCredential">
-        <b-input
-          size="sm"
-          v-model="credentialName"
-          placeholder="Enter a name"
-          class="create-credential__credential-name ml-3 mb-3"
-          required
-        ></b-input>
-        <CredentialField
-          v-for="(field, key) in fields"
-          v-bind:key="key"
-          :field="field"
-          :index="key"
-          :edit="edit"
-          :fieldNameValid="field.valid"
-          :plusButton="plusButton(key)"
-          :minusButton="minusButton(key)"
-          @onChangeFieldName="(val) => { updateFieldName(val, key) }"
-          @onChangeData="(val) => { updateData(val, key) }"
-          @onSelectTypeChange="(type) => { updateType(type, key) }"
-          @onClickRemove="() => removeField(key)"
-          @onClickAdd="addField"
-        />
-        <b-container class="create-credential__controls mt-4">
-          <b-row align-h="end" align-v="start" no-gutters>
-            <b-col cols="auto">
-              <b-button
-                class="create-credential__cancel-btn mr-2"
-                variant="default"
-                size="sm"
-                v-b-toggle.new-credential>
-                Cancel
-              </b-button>
-              <b-button
-                variant="primary"
-                size="sm"
-                :disabled="processing"
-                type="submit"
-              >
-                <span v-if="processing">
-                  <b-spinner
-                    small
-                    label="Spinning"
-                  ></b-spinner>
-                  Saving...
-                </span>
-                <span v-else>
-                  <i class="fas fa-save"></i> Save
-                </span>
-              </b-button>
-            </b-col>
-          </b-row>
-        </b-container>
-      </b-form>
-    </div>
+    <b-form @submit.prevent="saveCredential">
+      <CredentialForm
+        :credential="newCredential"
+        :processing="processing"
+        @addField="addField"
+        @removeField="(index) => { removeField(index) }"
+        @onChangeFieldName="(value, index) => { updateFieldName(value, index) }"
+        @onChangeData="(value, index) => { updateData(value, index) }"
+        @onSelectTypeChange="(value, index) => { updateType(value, index) }"
+      />
+    </b-form>
     <h4 class="create-credential__title-backup ml-3 mb-3">Credentials</h4>
   </div>
 </template>
 
 <script>
 import { cloneDeep } from 'lodash';
-import CredentialField from '@/components/CredentialField'
+import { BForm } from 'bootstrap-vue'
 import { userName, password } from '@/constants/fieldsTemplate'
-import { BContainer, BRow, BForm, BCol, BButton, BFormInput, BSpinner, VBToggle} from 'bootstrap-vue'
+import CredentialForm from '@/components/CredentialForm'
 import credentialStore from '@/store/credentials'
 import { cryptDataObj } from '@/utils/cryptDecrypt'
 
 export default {
-  created() {
-    this.fields = [
-      {
-        ...userName,
-        valid: null
-      },
-      {
-        ...password,
-        valid: null
-      }
-    ]
-  },
   data() {
     return {
-      credentialName: '',
-      fields: [],
+      newCredential: {
+        name: '',
+        fields: [
+          {
+            ...userName,
+            valid: null,
+            minusButton: true,
+            plusButton: false
+          },
+          {
+            ...password,
+            valid: null,
+            minusButton: true,
+            plusButton: true
+          }
+        ]
+      },
       edit: true,
       credentialState: credentialStore.state
     }
   },
   methods: {
     updateFieldName(value, index) {
-      const newFields = [...this.fields]
-      newFields[index].fieldName = value
-      this.fields = [...newFields]
+      const credentialCopy = cloneDeep(this.newCredential)
+      credentialCopy.fields[index].fieldName = value
+      this.newCredential = credentialCopy
       this.checkValidFieldName()
     },
     updateData(value, index) {
-      const newFields = [...this.fields]
-      newFields[index].data = value
-      this.fields = [...newFields]
+      const credentialCopy = cloneDeep(this.newCredential)
+      credentialCopy.fields[index].data = value
+      this.newCredential = credentialCopy
     },
-    updateType(type, index) {
-      const newFields = [...this.fields]
-      newFields[index].type = type
-      this.fields = [...newFields]
-    },
-    plusButton(key) {
-      return key+1 === this.fields.length
-    },
-    minusButton() {
-      return this.fields.length > 1
+    updateType(value, index) {
+      const credentialCopy = cloneDeep(this.newCredential)
+      credentialCopy.fields[index].type = value
+      this.newCredential = credentialCopy
     },
     checkValidFieldName() {
-      const newFields = [...this.fields]
+      const credentialCopy = cloneDeep(this.newCredential)
+      let newFields = cloneDeep(credentialCopy.fields)
       newFields.forEach((field) => {
         const equalFieldName = newFields.filter(fild => fild.fieldName !== '' && fild.fieldName === field.fieldName).length
         if(equalFieldName > 1) {
@@ -122,32 +75,40 @@ export default {
           field.valid = null
         }
       })
-      this.fields = [...newFields]
+      credentialCopy.fields = newFields
+      this.newCredential = credentialCopy
     },
     removeField(index) {
-      const newFields = [...this.fields]
+      const credentialCopy = cloneDeep(this.newCredential)
+      let newFields = cloneDeep(credentialCopy.fields)
       newFields.splice(index, 1)
-      this.fields = [...newFields]
+      credentialCopy.fields = newFields
+      this.newCredential = credentialCopy
     },
     addField() {
-      const newFields = [...this.fields]
-      newFields.push({
-        fieldName: '',
-        data: '',
-        type: 'text',
-        valid: null
-      })
-      this.fields = [...newFields] 
+      const credentialCopy = cloneDeep(this.newCredential)
+      credentialCopy.fields = [
+        ...credentialCopy.fields,
+        {
+          fieldName: '',
+          data: '',
+          type: 'text',
+          valid: null
+        }
+      ]
+      this.newCredential = credentialCopy
     },
     saveCredential() {
-      const fields = cloneDeep(this.fields)
+      const fields = cloneDeep(this.newCredential.fields)
       const data = fields.map(field => {
         delete field['valid']
+        delete field['plusButton']
+        delete field['minusButton']
         return field
       })
 
       const credential = {
-        name: this.credentialName,
+        name: this.newCredential.name,
         data: cryptDataObj(data)
       }
 
@@ -159,41 +120,36 @@ export default {
       
     }
   },
+  watch: {
+    fieldLength(newValue){
+      if(newValue) {
+        const credentialCopy = cloneDeep(this.newCredential)
+        let newFields = cloneDeep(credentialCopy.fields)
+        
+        newFields.forEach(field => {
+          field.plusButton = false
+          field.minusButton = true
+        })
+        newFields[newValue - 1].plusButton = true
+        if(newValue === 1) {
+          newFields[0].minusButton = false
+        }
+        credentialCopy.fields = newFields
+        this.newCredential = credentialCopy
+      }
+    }
+  },
   computed: {
+    fieldLength() {
+      return this.newCredential.fields.length
+    },
     processing() {
       return this.credentialState.credentialStatus.processing
     }
   },
-  directives: {
-    'b-toggle': VBToggle
-  },
   components: {
-    CredentialField,
-    BContainer,
-    BRow,
-    BCol,
-    BButton,
-    'b-input': BFormInput,
-    BSpinner,
-    BForm
-    
+    BForm,
+    CredentialForm
   }
 }
 </script>
-
-<style lang="scss" scoped>
-  .create-credential {
-    
-    &__box {
-      padding: 24px 10px 20px;
-      background-color: #f2f2f2;
-      border-radius: 3px;
-      box-shadow: 0px 0px 3px rgba(0,0,0,.05) inset;
-      margin-bottom: 40px;
-    }
-
-    &__credential-name {
-      width: 200px;
-    }
-  }
-</style>

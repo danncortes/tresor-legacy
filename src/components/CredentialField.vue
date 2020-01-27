@@ -26,13 +26,13 @@
             <label
               v-else
               class="mr-sm-2"
-              :for="`inline-form-input-${field.fieldName}`">
+              :for="`inline-form-input-${index}`">
                 {{field.fieldName}}
             </label>
 
             <!-- Data -->
             <b-input
-              :id="`inline-form-input-${field.fieldName}`"
+              :id="`inline-form-input-${index}`"
               size="sm"
               :value="data"
               :type="typeField"
@@ -134,11 +134,9 @@
       },
       onCopy(el, index) {
         this.$emit('onToggleShowPass', index)
-        this.$nextTick(() => {this.readonly = false})
         this.$nextTick(() => {this.$refs[el].select()})
         this.$nextTick(() => {document.execCommand('copy')})
         this.$nextTick(() => {this.$emit('onToggleShowPass', index)})
-        this.$nextTick(() => {this.readonly = true})
         this.copied = true
         setTimeout(() => {
           this.copied = false
@@ -154,19 +152,19 @@
         window.open(`https://www.google.com/maps/search/${this.data}`, "_blank")
       },
       onChangeFieldName(e) {
-        this.$emit('onChangeFieldName', e.target.value)
+        this.$parent.$emit('onChangeFieldName', e.target.value, this.index)
       },
       onChangeData(e) {
-        this.$emit('onChangeData', e.target.value)
+        this.$parent.$emit('onChangeData', e.target.value, this.index)
       },
       onSelectTypeChange(type) {
-        this.$emit('onSelectTypeChange', type)
+        this.$parent.$emit('onSelectTypeChange', type, this.index)
       },
       onClickRemove() {
-        this.$emit('onClickRemove')
+        this.$parent.$emit('removeField', this.index)
       },
       onClickAdd() {
-        this.$emit('onClickAdd')
+        this.$parent.$emit('addField')
       }
     },
     props: {

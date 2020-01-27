@@ -106,7 +106,7 @@ export default {
     }
 
     &__create-cred-container {
-      min-height: 325px
+      min-height: 300px
     }
   }
 
