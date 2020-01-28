@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import { cloneDeep } from 'lodash';
 import CredentialListItem from '@/components/CredentialListItem'
 import { BContainer, BRow, BCol } from 'bootstrap-vue'
 
@@ -45,13 +46,15 @@ export default {
   },
   methods:{
     buildLocalCredentials(){
-      this.localCredentials = this.credentials.map(cred => ({
+      const newCredentials = cloneDeep(this.credentials)
+      this.localCredentials = newCredentials.map(cred => ({
         ...cred,
         open: false
       }))
     },
     toggleCred (index) {
-      this.localCredentials = this.localCredentials.map((cred, indx) => {
+      const newCredentials = cloneDeep(this.localCredentials)
+      this.localCredentials = newCredentials.map((cred, indx) => {
         if(index === indx) {
           cred.open = !cred.open
         }

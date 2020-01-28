@@ -3,7 +3,7 @@
     <div
       class="credential-list-item__bar px-2 py-3"
       @click="onClickCredential"
-      v-b-toggle="credential._id"
+      
     >
       <b-container class="bv-example-row">
         <b-row>
@@ -17,51 +17,66 @@
         </b-row>
       </b-container>
     </div>
-    
-    <b-collapse :id="credential._id">
-        <div>
-          <b-form
-            @submit.prevent="saveCredential" 
-            v-if="isEdit"
-          >
-            <CredentialForm
-              :credential="newCredential"
-              :processing="processing"
-              @cancel="cancel"
-              @addField="addField"
-              @removeField="(index) => { removeField(index) }"
-              @onChangeFieldName="(value, index) => { updateFieldName(value, index) }"
-              @onChangeData="(value, index) => { updateData(value, index) }"
-              @onSelectTypeChange="(value, index) => { updateType(value, index) }"
-            />
-          </b-form>
-          <transition v-else name="fade">
-            <CredentialDetail
-              class="credential-list-item__collapsable-area px-4 pt-4 pb-2"
-              v-if="credential.open"
-              :open="credential.open"
-              :data="credential.data"
-            />
-          </transition>
-          <b-container class="credential-list-item__controls mb-4">
-            <b-row align-h="between" align-v="center">
-              <b-col cols="auto">
-              </b-col>
-              <b-col cols="auto">
-                <b-button
-                  class=""
-                  variant="primary"
-                  size="sm"
-                  @click="onClickEdit"
-                  v-if="!isEdit"
-                >
-                  <i class="fas fa-pencil-alt"></i>
-                  Edit
-                </b-button>
-              </b-col>
-            </b-row>
-          </b-container>
-        </div>
+    <b-collapse v-model="visible" >
+      <div class="credential-list-item__collapsable-area">
+        <!-- Form Edit -->
+        <b-form
+          @submit.prevent="saveCredential" 
+          v-if="isEdit"
+        >
+          <CredentialForm
+            :credential="newCredential"
+            :processing="processing"
+            @cancel="cancel"
+            @addField="addField"
+            @removeField="(index) => { removeField(index) }"
+            @onChangeFieldName="(value, index) => { updateFieldName(value, index) }"
+            @onChangeData="(value, index) => { updateData(value, index) }"
+            @onSelectTypeChange="(value, index) => { updateType(value, index) }"
+          />
+        </b-form>
+          <CredentialDetail
+            class="credential-list-item__detail px-4 pt-4 pb-2"
+            v-else-if="credential.open"
+            :open="credential.open"
+            :data="credential.data"
+          />
+        <b-container class="credential-list-item__controls pb-4" v-if="credential.open && !isEdit">
+          <b-row align-h="between" align-v="center">
+            <b-col cols="auto">
+              <b-button
+                class=""
+                variant="danger"
+                size="sm"
+                @click="onClickDelete"
+                :disabled="processing"
+              >
+                <span v-if="processing">
+                  <b-spinner
+                    small
+                    label="Spinning"
+                  ></b-spinner>
+                  Deleting...
+                </span>
+                <span v-else>
+                  <i class="fas fa-trash-alt"></i>
+                </span>
+              </b-button>
+            </b-col>
+            <b-col cols="auto">
+              <b-button
+                class=""
+                variant="primary"
+                size="sm"
+                @click="onClickEdit"
+              >
+                <i class="fas fa-pencil-alt"></i>
+                Edit
+              </b-button>
+            </b-col>
+          </b-row>
+        </b-container>
+      </div>
     </b-collapse>
   </div>
 </template>
@@ -69,7 +84,7 @@
 <script>
 import { cloneDeep } from 'lodash';
 import { decryptDataObj } from '@/utils/cryptDecrypt'
-import { BCollapse, VBToggle, BContainer, BRow, BCol, BButton, BForm } from 'bootstrap-vue'
+import { BCollapse, VBToggle, BContainer, BRow, BCol, BButton, BForm, BSpinner } from 'bootstrap-vue'
 import CredentialDetail from '@/components/CredentialDetail'
 import CredentialForm from '@/components/CredentialForm'
 import CredentialFormMixin from '@/mixins/CredentialFormMixin'
@@ -82,7 +97,9 @@ export default {
     return {
       isEdit: false,
       newCredential: {},
-      credentialState: credentialStore.state
+      credentialState: credentialStore.state,
+      visible: false,
+      decrypted: false
     }
   },
   props: {
@@ -124,8 +141,10 @@ export default {
       // Create credential
       credentialStore.updateCredential(credential, this.newCredential.id).then(() => {
         this.cancel()
-        this.$emit('onClickCredential')
       })
+    },
+    onClickDelete() {
+      credentialStore.deleteCredential(this.credential._id)
     }
   },
   computed: {
@@ -137,6 +156,16 @@ export default {
     isEdit(newValue) {
       if(newValue) {
         this.newCredential = this.buildNewCredential(this.credential)
+      }
+    },
+    credential() {
+      this.$nextTick(() => {
+        this.visible = this.credential.open
+      })
+    },
+    visible(newValue) {
+      if(newValue === false) {
+        this.isEdit = false
       }
     }
   },
@@ -151,7 +180,8 @@ export default {
     CredentialDetail,
     BButton,
     BForm,
-    CredentialForm
+    CredentialForm,
+    BSpinner
   }
 }
 </script>

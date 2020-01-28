@@ -28,8 +28,17 @@ const updateCredential = (token, data, id) => {
   )
 }
 
+const deleteCredential = (token, id) => {
+  return axios.delete(`${VUE_APP_API_URL}/cred/${id}`,
+    {
+      headers: { 'Authorization': `Bearer ${token}` },
+    }
+  )
+}
+
 export {
   fetchCredentials,
   createCredential,
-  updateCredential
+  updateCredential,
+  deleteCredential
 }

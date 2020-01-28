@@ -33,7 +33,7 @@ export default {
   data() {
     return {
       credentialDetail: {},
-      credentialDetailArray: []
+      credentialDetailArray: [],
     }
   },
   methods: {
