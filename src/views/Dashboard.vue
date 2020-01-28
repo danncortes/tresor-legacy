@@ -30,7 +30,8 @@
         <transition name="fadeCred">
           <CreateCredential
             v-if="openNewCredential"
-            @onCredCreated="() => {this.openNewCredential = !this.openNewCredential}"
+            @onCredCreated="() => {this.openNewCredential = false}"
+            @cancelCreate="() => {this.openNewCredential = false}"
           />
         </transition>
       </div>

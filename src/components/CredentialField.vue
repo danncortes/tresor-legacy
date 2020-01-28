@@ -17,7 +17,7 @@
                 required
                 class="credential-field__input-field-name"
               ></b-input>
-              <b-form-invalid-feedback id="input-live-feedback">
+              <b-form-invalid-feedback class="credential-field__input-field-name-feedback" id="input-live-feedback">
                 "{{fieldName}}" field should not be duplicated
               </b-form-invalid-feedback>
             </div>
@@ -206,10 +206,10 @@
 
 <style lang="scss">
   .credential-field {
-    &__input-field-name {
+    &__input-field-name, &__input-field-name-feedback {
       width: 120px;
     }
-
+    
     &__data-field {
       width: 210px
     }

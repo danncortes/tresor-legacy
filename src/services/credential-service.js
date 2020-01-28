@@ -10,8 +10,17 @@ const fetchCredentials = (token) => {
   )
 }
 
-const saveCredential = (token, data) => {
+const createCredential = (token, data) => {
   return axios.post(`${VUE_APP_API_URL}/cred`,
+    data,
+    {
+      headers: { 'Authorization': `Bearer ${token}` },
+    }
+  )
+}
+
+const updateCredential = (token, data, id) => {
+  return axios.patch(`${VUE_APP_API_URL}/cred/${id}`,
     data,
     {
       headers: { 'Authorization': `Bearer ${token}` },
@@ -21,5 +30,6 @@ const saveCredential = (token, data) => {
 
 export {
   fetchCredentials,
-  saveCredential
+  createCredential,
+  updateCredential
 }

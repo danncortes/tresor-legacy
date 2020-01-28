@@ -25,7 +25,8 @@
               class="credential-form__cancel-btn mr-2"
               variant="default"
               size="sm"
-              v-b-toggle.new-credential>
+              @click="onClickCancel"
+            >
               Cancel
             </b-button>
             <b-button
@@ -64,6 +65,11 @@ import { BContainer, BRow, BCol, BButton, BFormInput, BSpinner, VBToggle} from '
       processing: {
         type: Boolean,
         default: false
+      }
+    },
+    methods: {
+      onClickCancel() {
+        this.$emit('cancel')
       }
     },
     directives: {

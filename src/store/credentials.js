@@ -1,5 +1,5 @@
 import Vue from "vue";
-import { fetchCredentials, saveCredential } from '@/services/credential-service'
+import { fetchCredentials, createCredential, updateCredential } from '@/services/credential-service'
 
 const credentialStatus = {
   id: '',
@@ -42,7 +42,7 @@ export default Vue.observable({
     this.setProcessingCredential(true)
 
     try {
-      const newCredential = await saveCredential(token, credential)
+      const newCredential = await createCredential(token, credential)
 
       this.setCredentials([
         newCredential.data,
@@ -52,6 +52,30 @@ export default Vue.observable({
       return newCredential
     } catch (err) {
       this.setErrorCredential('Error saving Credentials')
+      throw err
+    } finally {
+      this.setProcessingCredential(false)
+    }
+  },
+  updateCredential: async function (credential, id) {
+    const vault = sessionStorage.getItem('vault')
+    const { token } = vault && JSON.parse(vault)
+
+    this.setErrorCredential(false)
+    this.setProcessingCredential(true, id)
+
+    try {
+      const updatedCredential = await updateCredential(token, credential, id)
+
+      const newCredentials = this.state.credentials.filter(cred => cred._id !== id)
+      this.setCredentials([
+        updatedCredential.data,
+        ...newCredentials
+      ])
+      this.setErrorCredential(false, id)
+      return updatedCredential
+    } catch (err) {
+      this.setErrorCredential('Error saving Credentials', id)
       throw err
     } finally {
       this.setProcessingCredential(false)
