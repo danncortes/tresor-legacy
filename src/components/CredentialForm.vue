@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import CredentialField from '@/components/CredentialField'
+import CredentialField from '@/components/CredentialField/CredentialField.vue'
 import { BContainer, BRow, BCol, BButton, BFormInput, BSpinner, VBToggle} from 'bootstrap-vue'
   export default {
     props: {

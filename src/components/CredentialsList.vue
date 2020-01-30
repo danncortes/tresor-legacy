@@ -1,6 +1,6 @@
 <template>
   <div class="credential-list">
-    <b-container class="credential-list__header mb-2">
+    <b-container class="credential-list__header mb-2" fluid>
       <b-row>
         <b-col cols="5">Name</b-col>
         <b-col cols="3">Updated At</b-col>

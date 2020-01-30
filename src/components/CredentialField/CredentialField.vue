@@ -25,7 +25,7 @@
             <!-- Label Read-->
             <label
               v-else
-              class="mr-sm-2"
+              class="mr-sm-2 credential-field__field-name-read"
               :for="`inline-form-input-${index}`">
                 {{field.fieldName}}
             </label>
@@ -51,31 +51,45 @@
 
             <div class="credential-field__controls-read" v-if="!edit">
               <!-- Eye button Show/Hide-->
-              <b-button variant="outline-secondary" size="sm" v-if="showEye" @click="() => { onClickEye(index) }">
+              <b-button class="credential-field__reveal-data-btn" variant="outline-secondary" size="sm" v-if="showEye" @click="() => { onClickEye(index) }">
                 <i class="fas fa-eye" v-if="!field.show"></i>
                 <i class="fas fa-eye-slash" v-else></i>
               </b-button>
 
-              <!-- Eye button Copy-->
+              <!-- button Copy-->
               <b-button
+                class="credential-field__copy-btn"
                 variant="outline-primary"
-                  size="sm"
-                  @click="() => { onCopy(field.fieldName, index) }">
+                size="sm"
+                @click="() => { onCopy(field.fieldName, index) }">
                 <i class="far fa-copy"></i>
               </b-button>
 
-              <!-- Eye button Send Email-->
-              <b-button v-if="field.type === 'email'" variant="outline-primary" size="sm" @click="() => { sendEmail()}">
+              <!-- button Send Email-->
+              <b-button
+                class="credential-field__email-btn"
+                v-if="field.type === 'email'"
+                variant="outline-primary"
+                size="sm"
+                @click="() => { sendEmail()}">
                 <i class="far fa-envelope"></i>
               </b-button>
 
-              <!-- Eye button Open Map-->
-              <b-button v-else-if="field.type === 'address'" variant="outline-primary" size="sm" @click="() => { searchMap()}">
+              <!-- button Open Map-->
+              <b-button
+                class="credential-field__address-btn"
+                v-else-if="field.type === 'address'"
+                variant="outline-primary"
+                size="sm" @click="() => { searchMap()}">
                 <i class="far fa-map"></i>
               </b-button>
 
-              <!-- Eye button Open Url-->
-              <b-button v-else-if="field.type === 'url'" variant="outline-primary" size="sm" @click="() => { openAddress()}">
+              <!-- button Open Url-->
+              <b-button
+                class="credential-field__url-btn"
+                v-else-if="field.type === 'url'"
+                variant="outline-primary"
+                size="sm" @click="() => { openAddress()}">
                 <i class="fas fa-external-link-alt"></i>
               </b-button>
 
@@ -86,10 +100,22 @@
 
         <b-col cols="auto" v-if="edit">
           <div class="credential-field__controls-read">
-            <b-button pill variant="outline-danger" size="sm" v-if="minusButton" @click="onClickRemove">
+            <b-button
+              class="credential-field__remove-btn"
+              pill
+              variant="outline-danger"
+              size="sm"
+              v-if="minusButton" 
+              @click="onClickRemove">
               <i class="fas fa-minus"></i>
             </b-button>
-            <b-button pill variant="outline-success" size="sm" v-if="plusButton" @click="onClickAdd">
+            <b-button
+              class="credential-field__add-btn"
+              pill
+              variant="outline-success"
+              size="sm"
+              v-if="plusButton"
+              @click="onClickAdd">
               <i class="fas fa-plus"></i>
             </b-button>
           </div>

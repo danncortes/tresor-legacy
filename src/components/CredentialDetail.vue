@@ -12,7 +12,7 @@
 
 <script>
 import { decryptDataObj, cryptDataObj } from '@/utils/cryptDecrypt'
-import CredentialField from '@/components/CredentialField'
+import CredentialField from '@/components/CredentialField/CredentialField.vue'
 
 export default {
   created(){

@@ -1,11 +1,11 @@
 <template>
   <div class="credential-list-item">
     <div
-      class="credential-list-item__bar px-2 py-3"
+      class="credential-list-item__bar py-3"
       @click="onClickCredential"
       
     >
-      <b-container class="bv-example-row">
+      <b-container class="bv-example-row" fluid>
         <b-row>
           <b-col cols="5">{{credential.name}}</b-col>
           <b-col cols="3">{{credential.updatedAt | format('DD-MM-YYYY HH:mm')}}</b-col>

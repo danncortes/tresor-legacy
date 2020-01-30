@@ -89,12 +89,10 @@ export default Vue.observable({
     this.setProcessingCredential(true, id)
 
     try {
-      const deletedCredential = await deleteCredential(token, id)
-
+      await deleteCredential(token, id)
       const newCredentials = this.state.credentials.filter(cred => cred._id !== id)
       this.setCredentials(newCredentials)
       this.setErrorCredential(false, id)
-      //return deletedCredential
     } catch (err) {
       this.setErrorCredential('Error deleting Credentials', id)
       throw err

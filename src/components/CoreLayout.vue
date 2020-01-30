@@ -1,11 +1,11 @@
 <template>
-  <b-col v-if="currentRoute === 'login'" cols="4">
+  <b-col v-if="currentRoute === 'login'" md="8" lg="6" xl="5">
     <b-card no-body>
       <!-- Header -->
       <slot></slot>
     </b-card>
   </b-col>
-  <b-col v-else cols="6">
+  <b-col v-else md="11" lg="10" xl="7">
     <b-card no-body>
       <!-- Header -->
       <slot></slot>
