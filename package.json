@@ -2,13 +2,16 @@
   "name": "vault",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://danncortes.github.io/vault",
   "scripts": {
     "build": "vue-cli-service build",
     "test": "jest",
     "lint": "vue-cli-service lint",
     "start": "node ./server.js",
     "start:dev": "vue-cli-service serve --mode development",
-    "test:unit": "vue-cli-service test:unit"
+    "test:unit": "vue-cli-service test:unit",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "axios": "^0.19.0",
@@ -34,6 +37,7 @@
     "babel-eslint": "^10.0.1",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
+    "gh-pages": "^2.2.0",
     "sass": "^1.23.1",
     "sass-loader": "^8.0.0",
     "vue-template-compiler": "^2.6.10"

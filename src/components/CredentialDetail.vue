@@ -11,12 +11,16 @@
 </template>
 
 <script>
-import { decryptDataObj, cryptDataObj } from '@/utils/cryptDecrypt'
+import store2 from 'store2'
+import { decryptData, decryptDataObj, cryptDataObj } from '@/utils/cryptDecrypt'
 import CredentialField from '@/components/CredentialField/CredentialField.vue'
 
 export default {
   created(){
-    this.credentialDetail = decryptDataObj(this.data)
+    let masterp = store2('masterp')
+    masterp = masterp && decryptData(`${masterp}`)
+
+    this.credentialDetail = decryptDataObj(this.data, masterp)
 
     const newCredentialDetail = this.credentialDetail.map(cred => {
       if(cred.type === 'userName' || cred.type === 'password') {

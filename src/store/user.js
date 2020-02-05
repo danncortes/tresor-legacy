@@ -44,7 +44,7 @@ export default {
     }
     try {
       const user = await signupUser(form)
-      store2('masterp', masterp)
+      store2('masterp', cryptData(masterp))
       this.setUser(user.data)
       router.push('/dashboard')
       this.setErrorSignup(false)

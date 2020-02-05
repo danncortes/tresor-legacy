@@ -9,6 +9,7 @@ import userStore from '@/store/user';
 Vue.use(Router)
 
 const checkAuthentication = async (to, from, next) => {
+
   const isTokenInStore = !!userStore.state.user.token
   if (isTokenInStore) {
     next()
@@ -67,7 +68,10 @@ const routes = [
   }
 ]
 
+const base = process.env.NODE_ENV === 'production' ? '/vault/' : '/'
+
 export default new Router({
   mode: 'history',
+  base,
   routes
 })

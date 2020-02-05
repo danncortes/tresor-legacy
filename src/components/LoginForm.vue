@@ -61,7 +61,8 @@ import {decryptData} from '@/utils/cryptDecrypt'
 
 export default {
   created(){
-    this.masterp = decryptData(store2('masterp'))
+    const masterP = store2('masterp')
+    this.masterp = masterP && decryptData(masterP)
   },
   mounted(){
     setTimeout(() => {

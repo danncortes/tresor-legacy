@@ -21,7 +21,7 @@
       <div class="credential-list-item__collapsable-area">
         <!-- Form Edit -->
         <b-form
-          @submit.prevent="saveCredential" 
+          @submit.prevent="saveUpdatedCredential" 
           v-if="isEdit"
         >
           <CredentialForm
@@ -83,13 +83,13 @@
 
 <script>
 import { cloneDeep } from 'lodash';
-import { decryptDataObj } from '@/utils/cryptDecrypt'
+import store2 from 'store2'
+import { decryptData, decryptDataObj, cryptDataObj } from '@/utils/cryptDecrypt'
 import { BCollapse, VBToggle, BContainer, BRow, BCol, BButton, BForm, BSpinner } from 'bootstrap-vue'
 import CredentialDetail from '@/components/CredentialDetail'
 import CredentialForm from '@/components/CredentialForm'
 import CredentialFormMixin from '@/mixins/CredentialFormMixin'
 import credentialStore from '@/store/credentials'
-import { cryptDataObj } from '@/utils/cryptDecrypt'
 
 export default {
   mixins: [CredentialFormMixin],
@@ -119,9 +119,12 @@ export default {
       this.isEdit = true
     },
     buildNewCredential(credential) {
+      let masterp = store2('masterp')
+      masterp = masterp && decryptData(`${masterp}`)
+
       const credentialCopy = cloneDeep(credential)
-      credentialCopy.data = decryptDataObj(credentialCopy.data)
-      return {
+      credentialCopy.data = decryptDataObj(credentialCopy.data, masterp)
+      const newCred = {
         id: credentialCopy._id,
         name: credentialCopy.name,
         fields: credentialCopy.data.map(field => ({
@@ -131,11 +134,20 @@ export default {
           plusButton: false
         }))
       }
+      newCred.fields[newCred.fields.length -1].plusButton = true
+
+      if(newCred.fields.length === 1) {
+        newCred.fields[0].minusButton = false
+      }
+      return newCred
     },
-    saveCredential(){
+    saveUpdatedCredential(){
+      let masterp = store2('masterp')
+      masterp = masterp && decryptData(`${masterp}`)
+
       const credential = {
         name: this.newCredential.name,
-        data: cryptDataObj(this.cleanFields())
+        data: cryptDataObj(this.cleanFields(), masterp)
       }
 
       // Create credential
