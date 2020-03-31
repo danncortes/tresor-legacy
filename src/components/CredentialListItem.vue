@@ -84,7 +84,7 @@
 <script>
 import { cloneDeep } from 'lodash';
 import store2 from 'store2'
-import { decryptData, decryptDataObj, cryptDataObj } from '@/utils/cryptDecrypt'
+import { decryptDataObj, cryptDataObj } from '@/utils/cryptDecrypt'
 import { BCollapse, VBToggle, BContainer, BRow, BCol, BButton, BForm, BSpinner } from 'bootstrap-vue'
 import CredentialDetail from '@/components/CredentialDetail'
 import CredentialForm from '@/components/CredentialForm'
@@ -120,7 +120,6 @@ export default {
     },
     buildNewCredential(credential) {
       let masterp = store2('masterp')
-      masterp = masterp && decryptData(`${masterp}`)
 
       const credentialCopy = cloneDeep(credential)
       credentialCopy.data = decryptDataObj(credentialCopy.data, masterp)
@@ -143,7 +142,6 @@ export default {
     },
     saveUpdatedCredential(){
       let masterp = store2('masterp')
-      masterp = masterp && decryptData(`${masterp}`)
 
       const credential = {
         name: this.newCredential.name,
