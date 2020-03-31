@@ -22,7 +22,7 @@ import store2 from 'store2'
 import { userName, password } from '@/constants/fieldsTemplate'
 import CredentialForm from '@/components/CredentialForm'
 import credentialStore from '@/store/credentials'
-import { cryptDataObj, decryptData } from '@/utils/cryptDecrypt'
+import { cryptDataObj } from '@/utils/cryptDecrypt'
 import CredentialFormMixin from '@/mixins/CredentialFormMixin';
 
 export default {
@@ -56,7 +56,6 @@ export default {
     },
     saveCredential() {
       let masterp = store2('masterp')
-      masterp = masterp && decryptData(`${masterp}`)
       
       const credential = {
         name: this.newCredential.name,

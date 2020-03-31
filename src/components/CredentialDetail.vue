@@ -12,15 +12,14 @@
 
 <script>
 import store2 from 'store2'
-import { decryptData, decryptDataObj, cryptDataObj } from '@/utils/cryptDecrypt'
+import { decryptDataObj, cryptDataObj } from '@/utils/cryptDecrypt'
 import CredentialField from '@/components/CredentialField/CredentialField.vue'
 
 export default {
   created(){
-    let masterp = store2('masterp')
-    masterp = masterp && decryptData(`${masterp}`)
+    this.masterp = store2('masterp')
 
-    this.credentialDetail = decryptDataObj(this.data, masterp)
+    this.credentialDetail = decryptDataObj(this.data, this.masterp)
 
     const newCredentialDetail = this.credentialDetail.map(cred => {
       if(cred.type === 'userName' || cred.type === 'password') {
@@ -38,6 +37,7 @@ export default {
     return {
       credentialDetail: {},
       credentialDetailArray: [],
+      masterp: null
     }
   },
   methods: {
@@ -48,7 +48,7 @@ export default {
     }
   },
   beforeDestroy(){
-    this.credentialDetail = cryptDataObj(this.credentialDetail)
+    this.credentialDetail = cryptDataObj(this.credentialDetail, this.masterp)
   },
   props: {
     open: {

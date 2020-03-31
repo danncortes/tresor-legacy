@@ -57,12 +57,10 @@
 <script>
 import store2 from 'store2'
 import { BButton, BForm, BFormInput, BFormGroup, BAlert } from 'bootstrap-vue'
-import {decryptData} from '@/utils/cryptDecrypt'
 
 export default {
   created(){
-    const masterP = store2('masterp')
-    this.masterp = masterP && decryptData(masterP)
+    this.masterp = store2('masterp')
   },
   mounted(){
     setTimeout(() => {

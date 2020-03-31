@@ -2,7 +2,6 @@ import uuid from 'uuid'
 import store2 from 'store2'
 import { loginUser, fetchUser, signupUser } from '@/services/user-service'
 import router from '@/router'
-import { cryptData } from '@/utils/cryptDecrypt'
 
 export default {
   state: {
@@ -25,7 +24,7 @@ export default {
     try {
       const user = await loginUser(form)
       this.setUser(user.data)
-      store2('masterp', cryptData(form.masterp))
+      store2('masterp', form.masterp)
       router.push('/dashboard')
       this.setErrorLogin(false)
     } catch (err) {
@@ -44,7 +43,7 @@ export default {
     }
     try {
       const user = await signupUser(form)
-      store2('masterp', cryptData(masterp))
+      store2('masterp', masterp)
       this.setUser(user.data)
       router.push('/dashboard')
       this.setErrorSignup(false)
