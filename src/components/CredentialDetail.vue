@@ -18,7 +18,6 @@ import CredentialField from '@/components/CredentialField/CredentialField.vue'
 export default {
   created(){
     this.masterp = store2('masterp')
-
     this.credentialDetail = decryptDataObj(this.data, this.masterp)
 
     const newCredentialDetail = this.credentialDetail.map(cred => {

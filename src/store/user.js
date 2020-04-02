@@ -45,7 +45,7 @@ export default {
       const user = await signupUser(form)
       store2('masterp', masterp)
       this.setUser(user.data)
-      router.push('/dashboard')
+      router.push({ name: 'welcome', params: { masterp } })
       this.setErrorSignup(false)
     } catch (err) {
       this.setErrorSignup('Error Signing Up!')
