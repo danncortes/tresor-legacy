@@ -1,13 +1,7 @@
 <template>
-  <b-col v-if="currentRoute === 'login'" md="8" lg="6" xl="5">
+  <b-col :md="layoutBreakPoints.md" :lg="layoutBreakPoints.lg" :xl="layoutBreakPoints.xl">
+    <HeaderComponent/>
     <b-card no-body>
-      <!-- Header -->
-      <slot></slot>
-    </b-card>
-  </b-col>
-  <b-col v-else md="11" lg="10" xl="7">
-    <b-card no-body>
-      <!-- Header -->
       <slot></slot>
     </b-card>
   </b-col>
@@ -15,18 +9,35 @@
 
 <script>
 import { BCol, BCard } from 'bootstrap-vue'
+import HeaderComponent from '@/components/HeaderComponent'
+
 export default {
   created(){
     this.setCurrentRoute(this.$route)
   },
   data(){
     return {
-      currentRoute: ''
+      currentRoute: '',
+      loginLayoutBreakPoints: {
+        md: '7',
+        lg: '6',
+        xl: '4'
+      },
+      defaultLayoutBreakPoints: {
+        md: '11',
+        lg: '9',
+        xl: '6'
+      }
     }
   },
   watch: {
     $route(newValue){
       this.setCurrentRoute(newValue)
+    }
+  },
+  computed: {
+    layoutBreakPoints() {
+      return this.currentRoute === 'login' ? this.loginLayoutBreakPoints : this.defaultLayoutBreakPoints
     }
   },
   methods:{
@@ -36,11 +47,8 @@ export default {
   },
   components: {
     BCard,
-    BCol
+    BCol,
+    HeaderComponent
   }
 }
 </script>
-
-<style lang="scss">
-
-</style>

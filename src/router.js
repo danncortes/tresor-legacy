@@ -4,6 +4,7 @@ import Vue from 'vue'
 import Layout from '@/components/Layout.vue';
 import Login from '@/views/Login.vue';
 import Dashboard from '@/views/Dashboard.vue';
+import Welcome from '@/views/Welcome.vue';
 import userStore from '@/store/user';
 
 Vue.use(Router)
@@ -63,6 +64,11 @@ const routes = [
         path: '/dashboard',
         component: Dashboard,
         beforeEnter: checkAuthentication
+      },
+      {
+        name: "welcome",
+        path: '/welcome',
+        component: Welcome
       }
     ]
   }
