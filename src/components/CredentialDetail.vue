@@ -1,6 +1,10 @@
 <template>
   <div class="credential-detail">
+    <div v-if="masterpError" class="d-flex justify-content-center">
+        <b-alert show variant="danger text-center">There was an error decripting this credential</b-alert>
+    </div>
     <CredentialField
+      v-else
       v-for="(field, key) in credentialDetailArray"
       :field="field"
       :index="key"
@@ -11,32 +15,35 @@
 </template>
 
 <script>
-import store2 from 'store2'
 import { decryptDataObj, cryptDataObj } from '@/utils/cryptDecrypt'
 import CredentialField from '@/components/CredentialField/CredentialField.vue'
+import { BAlert } from 'bootstrap-vue'
+import MasterP from '@/mixins/MasterP'
 
 export default {
+  mixins: [MasterP],
   created(){
-    this.masterp = store2('masterp')
-    this.credentialDetail = decryptDataObj(this.data, this.masterp)
-
-    const newCredentialDetail = this.credentialDetail.map(cred => {
-      if(cred.type === 'userName' || cred.type === 'password') {
-        return {
-          ...cred,
-          show: false
+    try{
+      this.credentialDetail = decryptDataObj(this.data, this.masterp)
+      const newCredentialDetail = this.credentialDetail.map(cred => {
+        if(cred.type === 'userName' || cred.type === 'password') {
+          return {
+            ...cred,
+            show: false
+          }
         }
-      }
-      return cred
-    })
-
-    this.credentialDetailArray = [...newCredentialDetail]
+        return cred
+      })
+      this.credentialDetailArray = [...newCredentialDetail]
+    } catch(err) {
+      this.masterpError = true
+    }
   },
   data() {
     return {
       credentialDetail: {},
       credentialDetailArray: [],
-      masterp: null
+      masterpError: false
     }
   },
   methods: {
@@ -60,7 +67,8 @@ export default {
     }
   },
   components: {
-    CredentialField
+    CredentialField,
+    BAlert
   }
 }
 </script>

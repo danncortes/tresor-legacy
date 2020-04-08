@@ -18,15 +18,15 @@
 
 <script>
 import { BForm } from 'bootstrap-vue'
-import store2 from 'store2'
 import { userName, password } from '@/constants/fieldsTemplate'
 import CredentialForm from '@/components/CredentialForm'
 import credentialStore from '@/store/credentials'
 import { cryptDataObj } from '@/utils/cryptDecrypt'
-import CredentialFormMixin from '@/mixins/CredentialFormMixin';
+import CredentialFormMixin from '@/mixins/CredentialFormMixin'
+import MasterP from '@/mixins/MasterP'
 
 export default {
-  mixins: [CredentialFormMixin],
+  mixins: [CredentialFormMixin, MasterP],
   data() {
     return {
       newCredential: {
@@ -55,11 +55,9 @@ export default {
       this.$emit('cancelCreate')
     },
     saveCredential() {
-      let masterp = store2('masterp')
-      
       const credential = {
         name: this.newCredential.name,
-        data: cryptDataObj(this.cleanFields(), masterp)
+        data: cryptDataObj(this.cleanFields(), this.masterp)
       }
 
       // Create credential

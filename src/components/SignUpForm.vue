@@ -51,7 +51,7 @@
       <i class="fas fa-spinner fa-spin" v-if="loading"></i>
       <span v-else>Sign Up</span>
     </b-button>
-    <b-button block type="reset" variant="default" size="sm">Reset</b-button>
+    <b-button block type="reset" variant="default" size="sm">Clear</b-button>
   </b-form>
 </template>
 

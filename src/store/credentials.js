@@ -1,5 +1,6 @@
 import Vue from "vue";
 import { fetchCredentials, createCredential, updateCredential, deleteCredential } from '@/services/credential-service'
+import session from '@/helpers/session';
 
 const credentialStatus = {
   id: '',
@@ -15,9 +16,7 @@ export default Vue.observable({
     credentialStatus
   },
   getCredentials: async function () {
-
-    const vault = sessionStorage.getItem('vault')
-    const { token } = vault && JSON.parse(vault)
+    const token = session()
 
     this.setErrorCredentials(false)
     this.setLoadingCredentials(true)
@@ -34,9 +33,7 @@ export default Vue.observable({
     }
   },
   createCredential: async function (credential) {
-
-    const vault = sessionStorage.getItem('vault')
-    const { token } = vault && JSON.parse(vault)
+    const token = session()
 
     this.setErrorCredential(false)
     this.setProcessingCredential(true)
@@ -58,8 +55,7 @@ export default Vue.observable({
     }
   },
   updateCredential: async function (credential, id) {
-    const vault = sessionStorage.getItem('vault')
-    const { token } = vault && JSON.parse(vault)
+    const token = session()
 
     this.setErrorCredential(false)
     this.setProcessingCredential(true, id)
@@ -82,8 +78,7 @@ export default Vue.observable({
     }
   },
   deleteCredential: async function (id) {
-    const vault = sessionStorage.getItem('vault')
-    const { token } = vault && JSON.parse(vault)
+    const token = session()
 
     this.setErrorCredential(false)
     this.setProcessingCredential(true, id)

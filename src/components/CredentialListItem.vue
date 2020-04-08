@@ -83,16 +83,16 @@
 
 <script>
 import { cloneDeep } from 'lodash';
-import store2 from 'store2'
 import { decryptDataObj, cryptDataObj } from '@/utils/cryptDecrypt'
 import { BCollapse, VBToggle, BContainer, BRow, BCol, BButton, BForm, BSpinner } from 'bootstrap-vue'
 import CredentialDetail from '@/components/CredentialDetail'
 import CredentialForm from '@/components/CredentialForm'
 import CredentialFormMixin from '@/mixins/CredentialFormMixin'
 import credentialStore from '@/store/credentials'
+import MasterP from '@/mixins/MasterP'
 
 export default {
-  mixins: [CredentialFormMixin],
+  mixins: [CredentialFormMixin, MasterP],
   data() {
     return {
       isEdit: false,
@@ -119,10 +119,8 @@ export default {
       this.isEdit = true
     },
     buildNewCredential(credential) {
-      let masterp = store2('masterp')
-
       const credentialCopy = cloneDeep(credential)
-      credentialCopy.data = decryptDataObj(credentialCopy.data, masterp)
+      credentialCopy.data = decryptDataObj(credentialCopy.data, this.masterp)
       const newCred = {
         id: credentialCopy._id,
         name: credentialCopy.name,
@@ -141,11 +139,9 @@ export default {
       return newCred
     },
     saveUpdatedCredential(){
-      let masterp = store2('masterp')
-
       const credential = {
         name: this.newCredential.name,
-        data: cryptDataObj(this.cleanFields(), masterp)
+        data: cryptDataObj(this.cleanFields(), this.masterp)
       }
 
       // Create credential

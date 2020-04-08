@@ -50,18 +50,16 @@
       <i class="fas fa-spinner fa-spin" v-if="loading"></i>
       <span v-else>Log In</span>
     </b-button>
-    <b-button block type="reset" variant="default" size="sm">Reset</b-button>
+    <b-button block type="reset" variant="default" size="sm">Clear</b-button>
   </b-form>
 </template>
 
 <script>
-import store2 from 'store2'
 import { BButton, BForm, BFormInput, BFormGroup, BAlert } from 'bootstrap-vue'
+import MasterP from '@/mixins/MasterP'
 
 export default {
-  created(){
-    this.masterp = store2('masterp')
-  },
+  mixins: [MasterP],
   mounted(){
     setTimeout(() => {
       this.readonly = false
@@ -75,8 +73,7 @@ export default {
         masterp: ''
       },
       showAlert: !!this.error,
-      readonly: true,
-      masterp: null
+      readonly: true
     }
   },
   props: {
