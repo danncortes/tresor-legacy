@@ -1,11 +1,10 @@
 import store2 from 'store2'
-import router from '@/router'
+import { removeTokenAndReject } from '@/helpers/session'
 
 export default {
   mounted() {
     if (!this.masterp) {
-      sessionStorage.removeItem('vault')
-      router.push('/login')
+      removeTokenAndReject()
     }
   },
   data() {

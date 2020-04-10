@@ -8,6 +8,7 @@
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import { BContainer } from 'bootstrap-vue'
+import { removeTokenAndReject } from '@/helpers/session'
 
 export default {
   name: 'app',
@@ -44,8 +45,7 @@ export default {
         window.clearInterval(this.interval)
         this.interval = null
         this.seconds = 0
-        sessionStorage.removeItem('vault')
-        this.$router.push('/login')
+        removeTokenAndReject()
       }
     }
   },

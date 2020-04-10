@@ -1,6 +1,6 @@
 import Vue from "vue";
 import { fetchCredentials, createCredential, updateCredential, deleteCredential } from '@/services/credential-service'
-import session from '@/helpers/session';
+import { getTokenOrReject } from '@/helpers/session';
 
 const credentialStatus = {
   id: '',
@@ -16,7 +16,7 @@ export default Vue.observable({
     credentialStatus
   },
   getCredentials: async function () {
-    const token = session()
+    const token = getTokenOrReject()
 
     this.setErrorCredentials(false)
     this.setLoadingCredentials(true)
@@ -33,7 +33,7 @@ export default Vue.observable({
     }
   },
   createCredential: async function (credential) {
-    const token = session()
+    const token = getTokenOrReject()
 
     this.setErrorCredential(false)
     this.setProcessingCredential(true)
@@ -55,7 +55,7 @@ export default Vue.observable({
     }
   },
   updateCredential: async function (credential, id) {
-    const token = session()
+    const token = getTokenOrReject()
 
     this.setErrorCredential(false)
     this.setProcessingCredential(true, id)
@@ -78,7 +78,7 @@ export default Vue.observable({
     }
   },
   deleteCredential: async function (id) {
-    const token = session()
+    const token = getTokenOrReject()
 
     this.setErrorCredential(false)
     this.setProcessingCredential(true, id)

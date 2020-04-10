@@ -4,12 +4,31 @@
       <img class="vault-icon mr-1" alt="Vault Logo" src="@/assets/vault-icon.png">
       <h4 class="mb-0 text-secondary font-weight-bold vault-header__logo--text">VAULT</h4>
     </div>
+    <b-button v-if="userState.isAuth" size="sm" @click="onClickLogout" variant="default" class="text-white">
+      <span class="mr-2">Log Out</span>
+      <i class="fas fa-sign-out-alt"></i>
+    </b-button>
   </div>
 </template>
 
 <script>
+import { BButton } from 'bootstrap-vue'
+import userStore from '@/store/user'
+
 export default {
-  
+  data(){
+    return {
+      userState: userStore.state
+    }
+  },
+  methods: {
+    onClickLogout(){
+      userStore.logoutUser()
+    }
+  },
+  components: {
+    BButton
+  }
 }
 </script>
 

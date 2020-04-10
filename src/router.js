@@ -6,6 +6,7 @@ import Login from '@/views/Login.vue';
 import Dashboard from '@/views/Dashboard.vue';
 import Welcome from '@/views/Welcome.vue';
 import userStore from '@/store/user';
+import { getToken, getTokenOrReject, removeToken } from '@/helpers/session'
 
 Vue.use(Router)
 
@@ -15,26 +16,22 @@ const checkAuthentication = async (to, from, next) => {
   if (isTokenInStore) {
     next()
   } else {
-    const vault = sessionStorage.getItem('vault')
-    const tokenFromSs = vault && JSON.parse(vault).token
-    if (tokenFromSs) {
+    const token = getTokenOrReject()
+    if (token) {
       try {
-        await userStore.fetchUser(tokenFromSs)
+        await userStore.fetchUser(token)
         next()
       } catch (err) {
-        sessionStorage.removeItem('vault')
+        removeToken()
         next('/login')
       }
-    } else {
-      next('/login')
     }
   }
 }
 
 const isAuth = (to, from, next) => {
-  const vault = sessionStorage.getItem('vault')
-  const tokenFromSs = vault && JSON.parse(vault).token
-  if (tokenFromSs) {
+  const token = getToken()
+  if (token) {
     next(from.path)
   } else {
     next()

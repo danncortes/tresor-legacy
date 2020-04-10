@@ -30,8 +30,18 @@ const fetchUser = (token) => {
   )
 }
 
+const logoutUser = (token) => {
+  return axios.post(`${VUE_APP_API_URL}/users/logoutAll`,
+    {},
+    {
+      headers: { 'Authorization': `Bearer ${token}` }
+    }
+  )
+}
+
 export {
   loginUser,
   fetchUser,
-  signupUser
+  signupUser,
+  logoutUser
 }

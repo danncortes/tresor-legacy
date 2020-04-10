@@ -1,7 +1,15 @@
 import uuid from 'uuid'
 import store2 from 'store2'
-import { loginUser, fetchUser, signupUser } from '@/services/user-service'
+import { loginUser, fetchUser, signupUser, logoutUser } from '@/services/user-service'
 import router from '@/router'
+import { getToken } from '@/helpers/session';
+
+const defaultState = {
+  user: {
+    name: ''
+  },
+  isAuth: false
+}
 
 export default {
   state: {
@@ -11,7 +19,8 @@ export default {
     errorLogin: '',
     loadingLogin: false,
     errorSignup: '',
-    loadingSignup: false
+    loadingSignup: false,
+    isAuth: false
   },
   fetchUser: async function (token) {
     return fetchUser(token).then(user => {
@@ -59,7 +68,16 @@ export default {
       ...payload.user,
       token: payload.token
     }
+    this.state.isAuth = true
     sessionStorage.setItem('vault', JSON.stringify(payload))
+  },
+  logoutUser() {
+    const token = getToken()
+    logoutUser(token)
+    sessionStorage.removeItem('vault')
+    this.state.user = { ...defaultState.user }
+    this.state.isAuth = false
+    router.push('/login')
   },
   setLoadingLogin(payload) {
     this.state.loadingLogin = payload
