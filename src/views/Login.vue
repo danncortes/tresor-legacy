@@ -4,15 +4,15 @@
       <b-tab title="Login" active>
         <LoginForm
           @onSubmitLogin="onSubmitLogin"
-          :error="userState.errorLogin"
-          :loading="userState.loadingLogin"
+          :error="userState.login.error"
+          :loading="userState.login.loading"
         ></LoginForm>
       </b-tab>
       <b-tab title="Sign Up">
         <SignUpForm
           @onSubmitSignUp="onSubmitSignUp"
-          :error="userState.errorSignup"
-          :loading="userState.loadingSignup"
+          :error="userState.signUp.error"
+          :loading="userState.signUp.loading"
         ></SignUpForm>
       </b-tab>
     </b-tabs>

@@ -2,25 +2,35 @@ import uuid from 'uuid'
 import store2 from 'store2'
 import { loginUser, fetchUser, signupUser, logoutUser } from '@/services/user-service'
 import router from '@/router'
-import { getToken } from '@/helpers/session';
+import { getToken, removeToken } from '@/helpers/session';
 
-const defaultState = {
-  user: {
-    name: ''
-  },
-  isAuth: false
+const defaultUserState = {
+  name: '',
+  isAuth: false,
+  token: '',
+}
+
+const defaultLoginState = {
+  error: '',
+  loading: false
+}
+
+const defaultSignUpState = {
+  error: '',
+  loading: false
 }
 
 export default {
   state: {
     user: {
-      name: ''
+      ...defaultUserState
     },
-    errorLogin: '',
-    loadingLogin: false,
-    errorSignup: '',
-    loadingSignup: false,
-    isAuth: false
+    login: {
+      ...defaultLoginState
+    },
+    signUp: {
+      ...defaultSignUpState
+    }
   },
   fetchUser: async function (token) {
     return fetchUser(token).then(user => {
@@ -65,30 +75,44 @@ export default {
   },
   setUser(payload) {
     this.state.user = {
+      ...this.state.user,
       ...payload.user,
+      isAuth: true,
       token: payload.token
     }
-    this.state.isAuth = true
     sessionStorage.setItem('vault', JSON.stringify(payload))
   },
   logoutUser() {
     const token = getToken()
     logoutUser(token)
-    sessionStorage.removeItem('vault')
-    this.state.user = { ...defaultState.user }
-    this.state.isAuth = false
+    removeToken()
+    this.state.user = defaultUserState
+    this.state.login = defaultLoginState
+    this.state.signUp = defaultSignUpState
     router.push('/login')
   },
   setLoadingLogin(payload) {
-    this.state.loadingLogin = payload
+    this.state.login = {
+      ...this.state.login,
+      loading: payload
+    }
   },
   setErrorLogin(payload) {
-    this.state.errorLogin = payload
+    this.state.login = {
+      ...this.state.login,
+      error: payload
+    }
   },
   setLoadingSignup(payload) {
-    this.state.loadingSignup = payload
+    this.state.signUp = {
+      ...this.state.signUp,
+      loading: payload
+    }
   },
   setErrorSignup(payload) {
-    this.state.errorSignup = payload
+    this.state.signUp = {
+      ...this.state.signUp,
+      error: payload
+    }
   }
 }
