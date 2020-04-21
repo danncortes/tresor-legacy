@@ -32,12 +32,14 @@ export default {
     }
   },
   methods: {
-    onSubmitLogin(form) {
-      userStore.loginUser(form)
+    async onSubmitLogin(form) {
+      await userStore.loginUser(form)
+      this.$router.push('/dashboard')
     },
-    onSubmitSignUp(form) {
+    async onSubmitSignUp(form) {
       const { email, password } = form
-      userStore.signupUser(email, password)
+      const masterp = await userStore.signupUser(email, password)
+      this.$router.push({ name: 'welcome', params: { masterp } })
     }
   },
   components: {

@@ -24,6 +24,7 @@ export default {
   methods: {
     onClickLogout(){
       userStore.logoutUser()
+      this.$router.push('/login')
     }
   },
   components: {

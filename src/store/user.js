@@ -1,7 +1,6 @@
 import uuid from 'uuid'
 import store2 from 'store2'
 import { loginUser, fetchUser, signupUser, logoutUser } from '@/services/user-service'
-import router from '@/router'
 import { getToken, removeToken } from '@/helpers/session';
 
 const defaultUserState = {
@@ -33,9 +32,8 @@ export default {
     }
   },
   fetchUser: async function (token) {
-    return fetchUser(token).then(user => {
-      this.setUser({ user: user.data, token })
-    })
+    const user = await fetchUser(token)
+    this.setUser({ user: user.data, token })
   },
   loginUser: async function (form) {
     this.setErrorLogin(false)
@@ -44,7 +42,6 @@ export default {
       const user = await loginUser(form)
       this.setUser(user.data)
       store2('masterp', form.masterp)
-      router.push('/dashboard')
       this.setErrorLogin(false)
     } catch (err) {
       this.setErrorLogin('Error Login In')
@@ -64,8 +61,8 @@ export default {
       const user = await signupUser(form)
       store2('masterp', masterp)
       this.setUser(user.data)
-      router.push({ name: 'welcome', params: { masterp } })
       this.setErrorSignup(false)
+      return masterp
     } catch (err) {
       this.setErrorSignup('Error Signing Up!')
       throw err
@@ -89,7 +86,6 @@ export default {
     this.state.user = defaultUserState
     this.state.login = defaultLoginState
     this.state.signUp = defaultSignUpState
-    router.push('/login')
   },
   setLoadingLogin(payload) {
     this.state.login = {
