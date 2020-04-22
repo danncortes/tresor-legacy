@@ -51,6 +51,15 @@
       <span v-else>Log In</span>
     </b-button>
     <b-button block type="reset" variant="default" size="sm">Clear</b-button>
+    <b-button
+      v-if="this.masterp"
+      @click="removeMasterP"
+      block
+      type="reset"
+      variant="default"
+      size="sm">
+        Log In from a new device?
+    </b-button>
   </b-form>
 </template>
 

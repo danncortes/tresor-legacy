@@ -12,5 +12,10 @@ export default {
       masterp: store2('masterp')
     }
   },
-
+  methods: {
+    removeMasterP() {
+      store2.remove('masterp');
+      this.masterp = null
+    }
+  }
 }
