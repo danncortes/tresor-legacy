@@ -8,8 +8,8 @@
       <b-container class="bv-example-row" fluid>
         <b-row>
           <b-col cols="5">{{credential.name}}</b-col>
-          <b-col cols="3">{{credential.updatedAt | format('DD-MM-YYYY HH:mm')}}</b-col>
-          <b-col cols="3">{{credential.createdAt | format('DD-MM-YYYY HH:mm')}}</b-col>
+          <b-col cols="3" class="credential-list-item__updated-at">{{credential.updatedAt | format('DD-MM-YYYY HH:mm')}}</b-col>
+          <b-col cols="3" class="credential-list-item__created-at">{{credential.createdAt | format('DD-MM-YYYY HH:mm')}}</b-col>
           <b-col cols="1">
             <i class="fas fa-angle-down" v-if="credential.open"></i>
             <i class="fas fa-angle-left" v-else></i>
@@ -44,24 +44,46 @@
         <b-container class="credential-list-item__controls pb-4" v-if="credential.open && !isEdit">
           <b-row align-h="between" align-v="center">
             <b-col cols="auto">
-              <b-button
-                class=""
-                variant="danger"
-                size="sm"
-                @click="onClickDelete"
-                :disabled="processing"
-              >
-                <span v-if="processing">
-                  <b-spinner
-                    small
-                    label="Spinning"
-                  ></b-spinner>
-                  Deleting...
-                </span>
-                <span v-else>
-                  <i class="fas fa-trash-alt"></i>
-                </span>
-              </b-button>
+              <div>
+                <div v-if="confirmDelete" class="flex">
+                  <b-button
+                  class="mr-2"
+                    variant="default"
+                    size="sm"
+                    @click="onClickCancelDelete"
+                  >
+                    Cancel
+                  </b-button>
+                  <b-button
+                    variant="danger"
+                    size="sm"
+                    @click="onClickConfirmDelete"
+                    :disabled="processing"
+                  >
+                    <span v-if="processing">
+                      <b-spinner
+                        small
+                        label="Spinning"
+                      ></b-spinner>
+                      Deleting...
+                    </span>
+                    <span v-else>
+                      Confirm delete!
+                    </span>
+                  </b-button>
+                </div>
+                <div v-else>
+                  <b-button
+                    class=""
+                    variant="danger"
+                    size="sm"
+                    @click="onClickDelete"
+                    :disabled="processing"
+                  >
+                    <i class="fas fa-trash-alt"></i>
+                  </b-button>
+                </div>
+              </div>
             </b-col>
             <b-col cols="auto">
               <b-button
@@ -99,7 +121,8 @@ export default {
       newCredential: {},
       credentialState: credentialStore.state,
       visible: false,
-      decrypted: false
+      decrypted: false,
+      confirmDelete: false
     }
   },
   props: {
@@ -149,8 +172,15 @@ export default {
         this.cancel()
       })
     },
-    onClickDelete() {
+    onClickDelete(){
+      this.confirmDelete = true
+    },
+    onClickCancelDelete(){
+      this.confirmDelete = false
+    },
+    onClickConfirmDelete() {
       credentialStore.deleteCredential(this.credential._id)
+      this.confirmDelete = false
     }
   },
   computed: {
@@ -204,6 +234,12 @@ export default {
     }
     .fade-enter, .fade-leave-to {
       opacity: 0;
+    }
+    &__updated-at, &__created-at {
+      font-size: 0.8rem;
+      color: #777;
+      font-weight: 600;
+      line-height: 1.5rem;
     }
   }
 </style>
