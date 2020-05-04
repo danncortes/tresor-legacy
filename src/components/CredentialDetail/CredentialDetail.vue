@@ -1,6 +1,6 @@
 <template>
   <div class="credential-detail">
-    <div v-if="masterpError" class="d-flex justify-content-center">
+    <div v-if="masterpError" class="d-flex justify-content-center credential-detail__error">
         <b-alert show variant="danger text-center">There was an error decripting this credential</b-alert>
     </div>
     <CredentialField

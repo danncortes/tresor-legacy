@@ -107,8 +107,8 @@
 import { cloneDeep } from 'lodash';
 import { decryptDataObj, cryptDataObj } from '@/utils/cryptDecrypt'
 import { BCollapse, VBToggle, BContainer, BRow, BCol, BButton, BForm, BSpinner } from 'bootstrap-vue'
-import CredentialDetail from '@/components/CredentialDetail'
-import CredentialForm from '@/components/CredentialForm'
+import CredentialDetail from '@/components/CredentialDetail/CredentialDetail.vue'
+import CredentialForm from '@/components/CredentialForm.vue'
 import CredentialFormMixin from '@/mixins/CredentialFormMixin'
 import credentialStore from '@/store/credentials'
 import MasterP from '@/mixins/MasterP'

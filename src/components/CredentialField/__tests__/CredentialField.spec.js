@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { mount, shallowMount } from '@vue/test-utils'
 import CredentialField from '@/components/CredentialField/CredentialField.vue'
+import { BButton } from 'bootstrap-vue'
 
 describe('CredentialField - Read', () => {
   let wrapper
@@ -49,24 +50,24 @@ describe('CredentialField - Read', () => {
   })
 
   it('Should render email btn', () => {
-    propsData.field.type = 'email'
-    wrapper = mount(CredentialField, { propsData })
+    const newProps = { ...propsData, field: { ...propsData.field, type: 'email' } }
+    wrapper = mount(CredentialField, { propsData: newProps })
     const emailBtn = wrapper.find('button.credential-field__email-btn')
     expect(emailBtn.exists()).toBe(true)
     expect(emailBtn.contains('i.far.fa-envelope')).toBe(true)
   })
 
   it('Should render address btn', () => {
-    propsData.field.type = 'address'
-    wrapper = mount(CredentialField, { propsData })
+    const newProps = { ...propsData, field: { ...propsData.field, type: 'address' } }
+    wrapper = mount(CredentialField, { propsData: newProps })
     const addressBtn = wrapper.find('button.credential-field__address-btn')
     expect(addressBtn.exists()).toBe(true)
     expect(addressBtn.contains('i.far.fa-map')).toBe(true)
   })
 
   it('Should render url btn', () => {
-    propsData.field.type = 'url'
-    wrapper = mount(CredentialField, { propsData })
+    const newProps = { ...propsData, field: { ...propsData.field, type: 'url' } }
+    wrapper = mount(CredentialField, { propsData: newProps })
     const urlBtn = wrapper.find('button.credential-field__url-btn')
     expect(urlBtn.exists()).toBe(true)
     expect(urlBtn.contains('i.fas.fa-external-link-alt')).toBe(true)
@@ -80,6 +81,13 @@ describe('CredentialField - Read', () => {
   it('Should Not render Add field btn', () => {
     const addBtn = wrapper.find('button.credential-field__add-btn')
     expect(addBtn.exists()).toBe(false)
+  })
+
+  it('Should emmit proper event when click Eye Icon', async () => {
+    const eyeBtn = wrapper.find(BButton)
+    eyeBtn.trigger('click')
+    await wrapper.vm.$nextTick()
+    expect('onToggleShowPass' in wrapper.emitted()).toBe(true)
   })
 })
 
@@ -127,10 +135,9 @@ describe('CredentialField - Edit', () => {
   })
 
   it('Should not render Remove field btn nor Add field btn', () => {
-    propsData.plusButton = false
-    propsData.minusButton = false
+    const newProps = { ...propsData, plusButton: false, minusButton: false }
     wrapper = mount(CredentialField, {
-      propsData
+      propsData: newProps
     })
     expect(wrapper.find('button.credential-field__remove-btn').exists()).toBe(false)
     expect(wrapper.find('button.credential-field__add-btn').exists()).toBe(false)
