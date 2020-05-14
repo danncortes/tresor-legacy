@@ -1,6 +1,6 @@
 <template>
   <div class="welcome-view p-4">
-    <h3>Welcome to Vault</h3>
+    <h3>Welcome to Tresor</h3>
     <p>This is your Master Password and here there are some important details to know about it:</p>
     <ul>
       <li>It will be used to encrypt all your credentials</li>
