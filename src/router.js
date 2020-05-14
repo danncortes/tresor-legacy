@@ -71,10 +71,7 @@ const routes = [
   }
 ]
 
-const base = process.env.NODE_ENV === 'production' ? '/vault/' : '/'
-
 export default new Router({
-  mode: 'history',
-  base,
+  mode: 'hash',
   routes
 })

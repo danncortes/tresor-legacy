@@ -2,7 +2,7 @@
   "name": "vault",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://danncortes.github.io/vault",
+  "homepage": "https://tresor.host",
   "scripts": {
     "build": "vue-cli-service build",
     "test": "jest",
