@@ -9,7 +9,6 @@ Vue.filter("format", (value, arg) => {
   return dayjs(value).format(arg)
 });
 
-
 new Vue({
   router,
   render: h => h(App),

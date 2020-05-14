@@ -1,8 +1,8 @@
 <template>
-  <div class="vault-header d-flex mb-2 justify-content-between">
-    <div class="vault-header__logo d-flex">
-      <img class="vault-icon mr-1" alt="Vault Logo" src="@/assets/vault-icon.png">
-      <h4 class="mb-0 text-secondary font-weight-bold vault-header__logo--text">VAULT</h4>
+  <div class="tresor-header d-flex mb-2 justify-content-between">
+    <div class="tresor-header__logo d-flex">
+      <img class="tresor-icon mr-1" alt="Tresor Logo" src="@/assets/tresor-icon.png">
+      <h4 class="mb-0 text-secondary font-weight-bold tresor-header__logo--text">TRESOR</h4>
     </div>
     <b-button v-if="userState.user.isAuth" size="sm" @click="onClickLogout" variant="default" class="text-white">
       <span class="mr-2">Log Out</span>
@@ -34,9 +34,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .vault-header {
+  .tresor-header {
     &__logo {
-      & .vault-icon {
+      & .tresor-icon {
         width: 30px;
         height: 30px;
       }

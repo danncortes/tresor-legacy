@@ -77,7 +77,7 @@ export default {
       isAuth: true,
       token: payload.token
     }
-    sessionStorage.setItem('vault', JSON.stringify(payload))
+    sessionStorage.setItem('tresor', JSON.stringify(payload))
   },
   logoutUser() {
     const token = getToken()

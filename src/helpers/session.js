@@ -2,8 +2,8 @@ import router from '@/router'
 
 const getToken = () => {
   try {
-    const vault = sessionStorage.getItem('vault')
-    const { token } = vault && JSON.parse(vault)
+    const tresor = sessionStorage.getItem('tresor')
+    const { token } = tresor && JSON.parse(tresor)
     return token
   } catch (err) {
     return null
@@ -12,8 +12,8 @@ const getToken = () => {
 
 const getTokenOrReject = () => {
   try {
-    const vault = sessionStorage.getItem('vault')
-    const { token } = vault && JSON.parse(vault)
+    const tresor = sessionStorage.getItem('tresor')
+    const { token } = tresor && JSON.parse(tresor)
     return token
   } catch (err) {
     router.push('/login')
@@ -22,11 +22,11 @@ const getTokenOrReject = () => {
 }
 
 const removeToken = () => {
-  sessionStorage.removeItem('vault')
+  sessionStorage.removeItem('tresor')
 }
 
 const removeTokenAndReject = () => {
-  sessionStorage.removeItem('vault')
+  sessionStorage.removeItem('tresor')
   router.push('/login')
 }
 
