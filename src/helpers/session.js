@@ -27,7 +27,7 @@ const removeToken = () => {
 
 const removeTokenAndReject = () => {
   sessionStorage.removeItem('tresor')
-  router.push('/login')
+  router.history.current.path !== '/login' && router.push('/login')
 }
 
 export {
