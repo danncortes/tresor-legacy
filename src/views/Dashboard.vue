@@ -110,6 +110,4 @@ export default {
       min-height: 300px
     }
   }
-
-
 </style>
